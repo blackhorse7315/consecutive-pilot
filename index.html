@@ -500,7 +500,7 @@
 
    <!-- Footer -->
    <footer class="glossy-card m-4 mt-0 rounded-2xl p-3 text-center">
-    <p class="text-slate-600 text-xs font-semibold tracking-wide">Copyright 2025 by SkyOps Solution — Transwisata Flight Support</p>
+    <p class="text-slate-600 text-xs font-semibold tracking-wide">Copyright 2026 by SkyOps Solution — Transwisata Flight Support</p>
    </footer>
   </div>
 
@@ -518,7 +518,7 @@
 
    let editingPilotOriginalName = null;
    let editingPilotOriginalType = null;
-   // Core Pilots Database Arrays (Modified to Objects containing License)
+   
    let fixedWingPilots = [
     { name: 'Capt. Susetyo H', license: 'ATPL/4016' },
     { name: 'Capt. Purwoko', license: 'ATPL/5327' },
@@ -533,7 +533,7 @@
     { name: 'FO. K. A. N. Berliana', license: 'CPL-IR/190241' }
    ];
 
-  let rotaryWingPilots = [
+   let rotaryWingPilots = [
     { name: 'Capt. Marcelino B', license: 'ATPL-H/4798' },
     { name: 'Capt. S. Teddy P', license: 'ATPL-H/5753' },
     { name: 'Capt. M. Ramdani M', license: 'ATPL-H/20-0007' }
@@ -543,6 +543,18 @@
     { username: 'Admin', password: 'monitorketua', role: 'admin' },
     { username: 'flightsupport@pt-twa.co.id', password: 'flopstwa021', role: 'user' }
    ];
+
+   /* STREAMING_CHUNK: Integrating the main Google Sheets Fetch logic */
+   const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxs0kfCHVm3Z1eoyIwCcGI0uj9v7crwPdGou_gMSatMP-4nPgD0whGNqpMl6unWyzbA/exec';
+
+   // Fungsi Fetch untuk mengambil data
+   async function fetchData() {
+    const response = await fetch(WEB_APP_URL);
+    allFlightData = await response.json();
+    
+    // Process data similar to original initApp
+    refreshAllUI();
+   }
 
    async function initApp() {
     if (window.elementSdk) {
@@ -563,96 +575,8 @@
       ])
      });
     }
-
-    if (window.dataSdk) {
-     try {
-      const result = await window.dataSdk.init({
-       onDataChanged: (data) => {
-        allFlightData = data.filter(d => d.type === 'flight');
-        const pilotData = data.filter(d => d.type === 'pilot');
-        const userData = data.filter(d => d.type === 'user');
-
-        pilotData.forEach(p => {
-         const targetName = p.pilotName;
-         const licenseNo = p.route || 'N/A'; 
-         
-         if (p.pilotType === 'fixed' && !fixedWingPilots.some(f => f.name === targetName)) {
-          fixedWingPilots.push({ name: targetName, license: licenseNo });
-         } else if (p.pilotType === 'rotary' && !rotaryWingPilots.some(r => r.name === targetName)) {
-          rotaryWingPilots.push({ name: targetName, license: licenseNo });
-         }
-        });
-
-        userData.forEach(u => {
-         if (!users.find(us => us.username === u.pilotName)) {
-          users.push({ username: u.pilotName, password: u.route, role: 'user' });
-         }
-        });
-
-        refreshAllUI();
-       }
-      });
-
-      if (!result.isOk) {
-       console.warn('Backend Data SDK initialization failed, utilizing Local Database fallback mode.');
-       loadLocalStorageFallback();
-      }
-     } catch(e) {
-      console.warn('Data SDK error, starting local sync fallback database.', e);
-      loadLocalStorageFallback();
-     }
-    } else {
-     loadLocalStorageFallback();
-    }
-
-    loadStaticBackups();
-   }
-
-   function loadLocalStorageFallback() {
-    const storedFlights = localStorage.getItem('local_flights_db');
-    if (storedFlights) {
-     allFlightData = JSON.parse(storedFlights);
-    }
-    refreshAllUI();
-   }
-
-   function syncLocalDatabase() {
-    localStorage.setItem('local_flights_db', JSON.stringify(allFlightData));
-    refreshAllUI();
-   }
-
-   function loadStaticBackups() {
-    const storedPilots = localStorage.getItem('pilots_v2');
-    const storedUsers = localStorage.getItem('users');
     
-    if (storedPilots) {
-     const pilots = JSON.parse(storedPilots);
-     pilots.forEach(p => {
-      if (p.type === 'fixed' && !fixedWingPilots.some(fw => fw.name === p.name)) {
-       fixedWingPilots.push({ name: p.name, license: p.license || 'N/A' });
-      } else if (p.type === 'rotary' && !rotaryWingPilots.some(rw => rw.name === p.name)) {
-       rotaryWingPilots.push({ name: p.name, license: p.license || 'N/A' });
-      }
-     });
-    }
-    
-    if (storedUsers) {
-     const storedUserList = JSON.parse(storedUsers);
-     storedUserList.forEach(u => {
-      if (!users.find(us => us.username === u.username)) {
-       users.push(u);
-      }
-     });
-    }
-   }
-
-   function saveStaticBackups() {
-    const pilots = [
-     ...fixedWingPilots.map(p => ({ name: p.name, license: p.license, type: 'fixed' })),
-     ...rotaryWingPilots.map(p => ({ name: p.name, license: p.license, type: 'rotary' }))
-    ];
-    localStorage.setItem('pilots_v2', JSON.stringify(pilots));
-    localStorage.setItem('users', JSON.stringify(users.filter(u => u.role === 'user')));
+    await fetchData();
    }
 
    function refreshAllUI() {
@@ -664,6 +588,7 @@
     renderMenuSummaryTable();
    }
 
+   /* STREAMING_CHUNK: Setup logic and helper functions for generic UI state */
    function handleLogin() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
@@ -749,6 +674,7 @@
     }
    }
 
+   /* STREAMING_CHUNK: Providing Admin modification logic for pilot entries */
    function editPilot(type, name) {
     const list = type === 'fixed' ? fixedWingPilots : rotaryWingPilots;
     const pilot = list.find(p => p.name === name);
@@ -803,15 +729,7 @@
       const list = type === 'fixed' ? fixedWingPilots : rotaryWingPilots;
       list.push({ name, license });
      }
-
-     allFlightData.forEach(f => {
-      if (f.pilotName === editingPilotOriginalName) {
-       f.pilotName = name;
-       f.pilotType = type;
-      }
-     });
-     syncLocalDatabase();
-
+     
      cancelEditPilot();
      showInlineMessage('Pilot records successfully updated', 'success');
     } else {
@@ -829,23 +747,11 @@
       rotaryWingPilots.push({ name, license });
      }
 
-     if (window.dataSdk) {
-      await window.dataSdk.create({
-       type: 'pilot',
-       pilotName: name,
-       pilotType: type,
-       dateMission: '',
-       flightTime: '',
-       route: license, 
-       createdAt: new Date().toISOString()
-      });
-     }
      document.getElementById('newPilotName').value = '';
      document.getElementById('newPilotLicense').value = '';
      showInlineMessage('Pilot successfully added', 'success');
     }
 
-    saveStaticBackups();
     refreshAllUI();
    }
 
@@ -855,7 +761,6 @@
     } else {
      rotaryWingPilots = rotaryWingPilots.filter(p => p.name !== name);
     }
-    saveStaticBackups();
     refreshAllUI();
     showInlineMessage('Pilot successfully removed', 'success');
    }
@@ -876,32 +781,19 @@
 
     users.push({ username, password, role: 'user' });
     
-    if (window.dataSdk) {
-     await window.dataSdk.create({
-      type: 'user',
-      pilotName: username,
-      pilotType: '',
-      dateMission: '',
-      flightTime: '',
-      route: password,
-      createdAt: new Date().toISOString()
-     });
-    }
-
     document.getElementById('newUsername').value = '';
     document.getElementById('newPassword').value = '';
-    saveStaticBackups();
     refreshAllUI();
     showInlineMessage('Credential user successfully added', 'success');
    }
 
    function removeUser(username) {
     users = users.filter(u => u.username !== username);
-    saveStaticBackups();
     refreshAllUI();
     showInlineMessage('Credential user removed', 'success');
    }
 
+   /* STREAMING_CHUNK: Computing consecutive days rendering table in User menu */
    function renderMenuSummaryTable() {
     const container = document.getElementById('menuSummaryTableContainer');
     if (!container) return;
@@ -1026,6 +918,7 @@
     container.innerHTML = html;
    }
 
+   /* STREAMING_CHUNK: Filtering mechanism logic for Pilot selection views */
    function filterPilotsInList() {
     const q = document.getElementById('pilotSearchInput').value.toLowerCase();
     const cards = document.querySelectorAll('.pilot-list-card-item');
@@ -1110,6 +1003,7 @@
     showPage('pilotListPage');
    }
 
+   /* STREAMING_CHUNK: Integrating REST API fetch methods for flight saving/deletion logs */
    async function saveFlightData() {
     const dateMission = document.getElementById('dateMission').value;
     const flightTime = document.getElementById('flightTime').value.trim();
@@ -1129,66 +1023,38 @@
     btn.disabled = true;
     btn.textContent = 'Saving flight...';
 
+    const payload = {
+      command: editingFlightId ? 'update' : 'insert',
+      id: editingFlightId || 'id_' + Date.now(),
+      type: 'flight',
+      pilotName: currentPilot,
+      pilotType: currentPilotType,
+      dateMission,
+      flightTime,
+      route,
+      createdAt: new Date().toISOString()
+    };
+
     try {
-     if (editingFlightId) {
-      if (window.dataSdk) {
-       const record = allFlightData.find(f => f.__backendId === editingFlightId);
-       if (record) {
-        const result = await window.dataSdk.update({
-         ...record,
-         dateMission,
-         flightTime,
-         route
-        });
-        if (!result.isOk) {
-         showInlineMessage('Failed to save to database server', 'error');
-        }
-       }
-      } else {
-       const index = allFlightData.findIndex(f => f.__backendId === editingFlightId);
-       if(index !== -1) {
-        allFlightData[index].dateMission = dateMission;
-        allFlightData[index].flightTime = flightTime;
-        allFlightData[index].route = route;
-        syncLocalDatabase();
-       }
-      }
+      await fetch(WEB_APP_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+      
+      await fetchData(); 
+      showInlineMessage('Data berhasil disimpan ke Cloud!', 'success');
+      
+      document.getElementById('dateMission').value = '';
+      document.getElementById('flightTime').value = '';
+      document.getElementById('route').value = '';
       editingFlightId = null;
       document.getElementById('cancelBtn').classList.add('hidden');
-      showInlineMessage('Flight log updated successfully', 'success');
-     } else {
-      const newPayload = {
-       __backendId: 'local_' + Date.now(),
-       type: 'flight',
-       pilotName: currentPilot,
-       pilotType: currentPilotType,
-       dateMission,
-       flightTime,
-       route,
-       createdAt: new Date().toISOString()
-      };
-
-      if (window.dataSdk) {
-       const result = await window.dataSdk.create(newPayload);
-       if (!result.isOk) {
-        showInlineMessage('Failed to synchronize with server', 'error');
-       }
-      } else {
-       allFlightData.push(newPayload);
-       syncLocalDatabase();
-      }
-      showInlineMessage('Flight log created successfully', 'success');
-     }
-
-     document.getElementById('dateMission').value = '';
-     document.getElementById('flightTime').value = '';
-     document.getElementById('route').value = '';
+      document.getElementById('saveBtn').textContent = 'Save Record';
     } catch(e) {
-     showInlineMessage('Error saving flight log', 'error');
+      showInlineMessage('Error saving flight log', 'error');
     } finally {
-     btn.disabled = false;
-     btn.textContent = 'Save Record';
-     refreshAllUI();
+      btn.disabled = false;
+      btn.textContent = 'Save Record';
     }
    }
 
@@ -1202,7 +1068,7 @@
    }
 
    function editFlight(id) {
-    const flight = allFlightData.find(f => f.__backendId === id);
+    const flight = allFlightData.find(f => f.id === id); // Updated to match ID mapping locally or via backend if defined identically
     if (flight) {
      editingFlightId = id;
      document.getElementById('dateMission').value = flight.dateMission;
@@ -1211,15 +1077,27 @@
      document.getElementById('cancelBtn').classList.remove('hidden');
      document.getElementById('saveBtn').textContent = 'Update';
      showInlineMessage('Editing current log row values', 'success');
+    } else {
+     // Safety fetch check if mapping fails because of legacy __backendId handling
+     const backupFlight = allFlightData.find(f => f.__backendId === id || f[0] === id);
+     if(backupFlight) {
+      editingFlightId = id;
+      document.getElementById('dateMission').value = backupFlight.dateMission || backupFlight[4];
+      document.getElementById('flightTime').value = backupFlight.flightTime || backupFlight[5];
+      document.getElementById('route').value = backupFlight.route || backupFlight[6];
+      document.getElementById('cancelBtn').classList.remove('hidden');
+      document.getElementById('saveBtn').textContent = 'Update';
+      showInlineMessage('Editing current log row values', 'success');
+     }
     }
    }
 
    function copyFlight(id) {
-    const flight = allFlightData.find(f => f.__backendId === id);
+    const flight = allFlightData.find(f => f.id === id || f.__backendId === id || f[0] === id);
     if (flight) {
-     document.getElementById('dateMission').value = flight.dateMission;
-     document.getElementById('flightTime').value = flight.flightTime;
-     document.getElementById('route').value = flight.route;
+     document.getElementById('dateMission').value = flight.dateMission || flight[4];
+     document.getElementById('flightTime').value = flight.flightTime || flight[5];
+     document.getElementById('route').value = flight.route || flight[6];
      showInlineMessage('Values cloned to edit interface', 'success');
     }
    }
@@ -1230,21 +1108,13 @@
      btn.disabled = true;
      btn.textContent = '...';
      
-     const flight = allFlightData.find(f => f.__backendId === id);
-     if (flight) {
-      if (window.dataSdk) {
-       const result = await window.dataSdk.delete(flight);
-       if (!result.isOk) {
-        showInlineMessage('Database synchronization error.', 'error');
-       }
-      } else {
-       allFlightData = allFlightData.filter(f => f.__backendId !== id);
-       syncLocalDatabase();
-      }
-      showInlineMessage('Log successfully deleted', 'success');
-     }
-     btn.disabled = false;
+     const payload = { command: 'delete', id: id };
+     await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) });
+     await fetchData();
      refreshAllUI();
+     
+     showInlineMessage('Log successfully deleted', 'success');
+     btn.disabled = false;
     } else {
      btn.dataset.confirm = 'true';
      btn.textContent = 'Confirm?';
@@ -1257,6 +1127,7 @@
     }
    }
 
+   /* STREAMING_CHUNK: Resolving layout formatting algorithms for history rendering */
    function filterByYear() {
     selectedYear = parseInt(document.getElementById('yearFilter').value);
     renderFlightHistory();
@@ -1264,8 +1135,8 @@
    }
 
    function renderFlightHistory() {
-    const pilotFlights = allFlightData.filter(f => f.pilotName === currentPilot);
-    const years = [...new Set(pilotFlights.map(f => new Date(f.dateMission).getFullYear()))].sort((a, b) => b - a);
+    const pilotFlights = allFlightData.filter(f => f.pilotName === currentPilot || f[2] === currentPilot);
+    const years = [...new Set(pilotFlights.map(f => new Date(f.dateMission || f[4]).getFullYear()))].sort((a, b) => b - a);
     
     if (years.length === 0) years.push(new Date().getFullYear());
     if (!years.includes(selectedYear)) selectedYear = years[0];
@@ -1274,8 +1145,8 @@
     yearSelect.innerHTML = years.map(y => `<option value="${y}" ${y === selectedYear ? 'selected' : ''}>${y}</option>`).join('');
 
     const yearFlights = pilotFlights
-      .filter(f => new Date(f.dateMission).getFullYear() === selectedYear)
-      .sort((a, b) => new Date(b.dateMission) - new Date(a.dateMission));
+      .filter(f => new Date(f.dateMission || f[4]).getFullYear() === selectedYear)
+      .sort((a, b) => new Date(b.dateMission || b[4]) - new Date(a.dateMission || a[4]));
 
     const container = document.getElementById('flightHistory');
     
@@ -1287,24 +1158,25 @@
     container.innerHTML = yearFlights.map(f => `
      <div class="bg-white rounded-xl p-3 flex items-center justify-between border shadow-sm hover:border-slate-300 transition">
       <div class="flex-1">
-        <div class="font-bold text-slate-800 text-sm">${formatDate(f.dateMission)}</div>
-        <div class="text-xs text-slate-600 font-semibold mt-0.5">${f.route} • <span class="text-blue-600">${f.flightTime} hrs</span></div>
+        <div class="font-bold text-slate-800 text-sm">${formatDate(f.dateMission || f[4])}</div>
+        <div class="text-xs text-slate-600 font-semibold mt-0.5">${f.route || f[6]} • <span class="text-blue-600">${f.flightTime || f[5]} hrs</span></div>
       </div>
       <div class="flex gap-1.5">
-        <button onclick="editFlight('${f.__backendId}')" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg" title="Edit">
+        <button onclick="editFlight('${f.id || f.__backendId || f[0]}')" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg" title="Edit">
          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
         </button>
-        <button onclick="copyFlight('${f.__backendId}')" class="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg" title="Copy">
+        <button onclick="copyFlight('${f.id || f.__backendId || f[0]}')" class="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg" title="Copy">
          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
         </button>
-        <button data-delete-id="${f.__backendId}" data-confirm="false" onclick="deleteFlight('${f.__backendId}')" class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg text-xs font-semibold" title="Delete">Delete</button>
+        <button data-delete-id="${f.id || f.__backendId || f[0]}" data-confirm="false" onclick="deleteFlight('${f.id || f.__backendId || f[0]}')" class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg text-xs font-semibold" title="Delete">Delete</button>
       </div>
      </div>
     `).join('');
    }
 
+   /* STREAMING_CHUNK: Processing total elapsed limits for visual progress bar tracking */
    function calculateConsecutiveDays() {
-    const pilotFlights = allFlightData.filter(f => f.pilotName === currentPilot);
+    const pilotFlights = allFlightData.filter(f => f.pilotName === currentPilot || f[2] === currentPilot);
     const now = new Date();
     
     const limits = {
@@ -1319,13 +1191,13 @@
      startDate.setDate(startDate.getDate() - days);
      
      const periodFlights = pilotFlights.filter(f => {
-      const flightDate = new Date(f.dateMission);
+      const flightDate = new Date(f.dateMission || f[4]);
       return flightDate >= startDate && flightDate <= now;
      });
 
      let totalMinutes = 0;
      periodFlights.forEach(f => {
-      const parts = f.flightTime.split(':');
+      const parts = (f.flightTime || f[5]).split(':');
       if(parts.length === 2) {
        const [hours, mins] = parts.map(Number);
        totalMinutes += (hours * 60) + mins;
@@ -1353,7 +1225,7 @@
    }
 
    function exportPilotCSV() {
-    const pilotFlights = allFlightData.filter(f => f.pilotName === currentPilot);
+    const pilotFlights = allFlightData.filter(f => f.pilotName === currentPilot || f[2] === currentPilot);
     if(pilotFlights.length === 0) {
      showInlineMessage('No flight records found to export', 'error');
      return;
@@ -1363,7 +1235,7 @@
     csvContent += "Date Mission,Flight Time (hh:mm),Route,Pilot Name,Pilot Type\r\n";
 
     pilotFlights.forEach(f => {
-     csvContent += `"${f.dateMission}","${f.flightTime}","${f.route}","${f.pilotName}","${f.pilotType}"\r\n`;
+     csvContent += `"${f.dateMission || f[4]}","${f.flightTime || f[5]}","${f.route || f[6]}","${f.pilotName || f[2]}","${f.pilotType || f[3]}"\r\n`;
     });
 
     const encodedUri = encodeURI(csvContent);
@@ -1393,7 +1265,7 @@
     csv += "Pilot Crew Name,No. License,Wing Type,7 Days Flight Time,7 Days Limit,30 Days Flight Time,30 Days Limit,90 Days Flight Time,90 Days Limit,365 Days Flight Time,365 Days Limit\r\n";
 
     uniquePilots.forEach(pilotObj => {
-     const pilotFlights = allFlightData.filter(f => f.pilotName === pilotObj.name);
+     const pilotFlights = allFlightData.filter(f => f.pilotName === pilotObj.name || f[2] === pilotObj.name);
      
      const calculateMinutes = (days) => {
       const now = new Date();
@@ -1401,13 +1273,13 @@
       startDate.setDate(startDate.getDate() - days);
       
       const periodFlights = pilotFlights.filter(f => {
-       const flightDate = new Date(f.dateMission);
+       const flightDate = new Date(f.dateMission || f[4]);
        return flightDate >= startDate && flightDate <= now;
       });
 
       let totalMinutes = 0;
       periodFlights.forEach(f => {
-       const parts = f.flightTime.split(':');
+       const parts = (f.flightTime || f[5]).split(':');
        if(parts.length === 2) {
         const [hours, mins] = parts.map(Number);
         totalMinutes += (hours * 60) + mins;
@@ -1436,6 +1308,7 @@
     showInlineMessage('Summary exported to Excel/CSV', 'success');
    }
 
+   /* STREAMING_CHUNK: Processing formatting outputs for formatted PDF layouts */
    function printSummaryPDF() {
     const printWindow = window.open('', '_blank', 'width=850,height=1100');
     const limits = {
@@ -1452,7 +1325,7 @@
 
     let rowsHtml = '';
     uniquePilots.forEach(pilotObj => {
-     const pilotFlights = allFlightData.filter(f => f.pilotName === pilotObj.name);
+     const pilotFlights = allFlightData.filter(f => f.pilotName === pilotObj.name || f[2] === pilotObj.name);
      
      const calculateMinutes = (days) => {
       const now = new Date();
@@ -1460,13 +1333,13 @@
       startDate.setDate(startDate.getDate() - days);
       
       const periodFlights = pilotFlights.filter(f => {
-       const flightDate = new Date(f.dateMission);
+       const flightDate = new Date(f.dateMission || f[4]);
        return flightDate >= startDate && flightDate <= now;
       });
 
       let totalMinutes = 0;
       periodFlights.forEach(f => {
-       const parts = f.flightTime.split(':');
+       const parts = (f.flightTime || f[5]).split(':');
        if(parts.length === 2) {
         const [hours, mins] = parts.map(Number);
         totalMinutes += (hours * 60) + mins;
@@ -1537,7 +1410,7 @@
        <h1 style="font-size: 20px; color: #1e3a8a; margin: 0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">TRANSWISATA PRIMA AVIATION</h1>
        <p style="font-size: 12px; color: #475569; margin: 4px 0; font-weight: 600;">Flight Operations Support & Air Crew Monitoring System</p>
        <div style="font-size: 9px; color: #b91c1c; font-weight: bold; text-transform: uppercase; margin: 4px 0;">CONFIDENTIAL - AIRCREW OPERATIONS DIVISION - GENERATED VIA TRANSWISATA PILOT MANAGEMENT SUITE © ${new Date().getFullYear()}</div>
-       <div style="font-size: 9px; color: #64748b; margin-top: 2px;">Date Issued: ${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
+       <div style="font-size: 8px; color: #64748b; margin-top: 2px;">Date Issued: ${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
       </div>
       <div class="title">Active Pilot Flight Hours Status & Limits Audit</div>
       <table>
@@ -1553,7 +1426,6 @@
        </thead>
        <tbody>${rowsHtml}</tbody>
       </table>
-      <div class="footer">Generated via Transwisata Pilot Management Suite © ${new Date().getFullYear()}</div>
       <script>window.onload = function() { window.print(); setTimeout(function() { window.close(); }, 500); };<\/script>
      </body>
      </html>
@@ -1568,8 +1440,8 @@
     const printWindow = window.open('', '_blank', 'width=850,height=1100');
     
     const pilotFlights = allFlightData
-      .filter(f => f.pilotName === currentPilot)
-      .sort((a, b) => new Date(b.dateMission) - new Date(a.dateMission));
+      .filter(f => f.pilotName === currentPilot || f[2] === currentPilot)
+      .sort((a, b) => new Date(b.dateMission || b[4]) - new Date(a.dateMission || a[4]));
 
     const limits = {
      7: currentPilotType === 'fixed' ? 35 : 40,
@@ -1586,12 +1458,12 @@
      const startDate = new Date();
      startDate.setDate(startDate.getDate() - days);
      const periodFlights = pilotFlights.filter(f => {
-      const flightDate = new Date(f.dateMission);
+      const flightDate = new Date(f.dateMission || f[4]);
       return flightDate >= startDate && flightDate <= now;
      });
      let totalMinutes = 0;
      periodFlights.forEach(f => {
-      const parts = f.flightTime.split(':');
+      const parts = (f.flightTime || f[5]).split(':');
       if(parts.length === 2) {
        const [hours, mins] = parts.map(Number);
        totalMinutes += (hours * 60) + mins;
@@ -1620,9 +1492,9 @@
       flightHistoryRowsHtml += `
        <tr style="page-break-inside: avoid;">
         <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; color: #64748b;">${idx + 1}</td>
-        <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #1e293b;">${formatDate(f.dateMission)}</td>
-        <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; color: #334155;">${f.route}</td>
-        <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; font-weight: bold; color: #1e3a8a;">${f.flightTime}</td>
+        <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #1e293b;">${formatDate(f.dateMission || f[4])}</td>
+        <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; color: #334155;">${f.route || f[6]}</td>
+        <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; font-weight: bold; color: #1e3a8a;">${f.flightTime || f[5]}</td>
        </tr>
       `;
      });
@@ -1714,6 +1586,7 @@
     printWindow.document.close();
    }
 
+   /* STREAMING_CHUNK: Processing data parsing utilities */
    function formatDate(dateStr) {
     if(!dateStr) return '';
     const date = new Date(dateStr);
@@ -1906,8 +1779,9 @@
       Memproses ${processedCount}/${validItems.length}...
      `;
 
-     const newPayload = {
-      __backendId: 'local_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+     const payload = {
+      command: 'insert',
+      id: 'local_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
       type: 'flight',
       pilotName: currentPilot,
       pilotType: currentPilotType,
@@ -1917,20 +1791,14 @@
       createdAt: new Date().toISOString()
      };
 
-     if (window.dataSdk) {
-      try {
-       await window.dataSdk.create(newPayload);
-      } catch(e) {
-       console.warn('Backend Sdk unavailable during batch loop. Fallback writing.', e);
-       allFlightData.push(newPayload);
-      }
-     } else {
-      allFlightData.push(newPayload);
+     try {
+       await fetch(WEB_APP_URL, {
+         method: 'POST',
+         body: JSON.stringify(payload)
+       });
+     } catch(e) {
+       console.warn('Network issue during batch insert.', e);
      }
-    }
-
-    if (!window.dataSdk) {
-     syncLocalDatabase();
     }
 
     btn.disabled = false;
@@ -1939,7 +1807,7 @@
     showInlineMessage(`Berhasil menyisipkan ${validItems.length} data ke log!`, 'success');
     clearBatchInput();
     switchEntryTab('single');
-    refreshAllUI();
+    await fetchData(); 
    }
 
    function showInlineMessage(message, type) {
