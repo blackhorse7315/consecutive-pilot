@@ -4,20 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Transwisata Pilot Consecutive Days Calculation</title>
-  
-  <!-- PWA & Mobile Web App Meta Tags -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="TWA Pilot">
-  <meta name="theme-color" content="#0f172a">
-  
-  <!-- Favicon and App Shortcut Icons using provided Google Drive direct link -->
-  <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1WmKc-kVzFFQc4wY3GeKFUUUE2Zb8iWcr">
-  <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/1WmKc-kVzFFQc4wY3GeKFUUUE2Zb8iWcr">
-  
-  <!-- Inline Manifest element to be populated by JS -->
-  <link rel="manifest" id="pwa-manifest">
-
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="/_sdk/element_sdk.js"></script>
   <script src="/_sdk/data_sdk.js"></script>
@@ -143,8 +129,11 @@
    <div id="loginPage" class="flex-1 flex items-center justify-center p-4">
     <div class="glossy-card rounded-3xl p-8 w-full max-w-md transition-all duration-300 transform scale-100 hover:scale-[1.01]">
      <div class="text-center mb-8">
-      <div class="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-indigo-500 bg-slate-900 flex items-center justify-center shadow-lg relative overflow-hidden group p-1">
-       <img src="https://lh3.googleusercontent.com/d/1WmKc-kVzFFQc4wY3GeKFUUUE2Zb8iWcr" alt="Transwisata Logo" class="w-full h-full object-contain rounded-full">
+      <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-600 to-indigo-800 flex items-center justify-center shadow-lg relative overflow-hidden group">
+       <div class="absolute inset-0 bg-white/10 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+       <svg class="w-10 h-10 text-white transform group-hover:rotate-12 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
+       </svg>
       </div>
       <h1 id="appTitle" class="title-font text-2xl font-bold text-slate-800 mb-2">Transwisata Pilot Consecutive Days</h1>
       <p class="text-slate-500 text-xs tracking-wider uppercase font-medium">Flight Time Management System</p>
@@ -164,29 +153,18 @@
     </div>
    </div>
 
-   <!-- STREAMING_CHUNK: Designing the Admin Dashboard container and tables -->
    <!-- Admin Page -->
    <div id="adminPage" class="hidden flex-1 flex flex-col">
-    <header class="glossy-card m-4 rounded-2xl p-4 flex items-center justify-between flex-wrap gap-3">
+    <header class="glossy-card m-4 rounded-2xl p-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="https://lh3.googleusercontent.com/d/1WmKc-kVzFFQc4wY3GeKFUUUE2Zb8iWcr" alt="TWA Mini Logo" class="w-8 h-8 object-contain">
+        <span class="w-3 h-3 rounded-full bg-blue-600 animate-pulse"></span>
         <h1 class="title-font text-xl font-bold text-slate-800">Admin Dashboard</h1>
       </div>
-      <div class="flex items-center gap-2">
-        <button onclick="manualSync(this)" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 4.89M9 11l3 3m0 0l3-3m-3 3V4"/></svg>
-          Sync Manual
-        </button>
-        <div class="db-status-badge flex items-center gap-2 bg-slate-100 text-slate-600 border px-3 py-1 rounded-xl text-xs font-semibold">
-          <span class="w-2 h-2 rounded-full bg-slate-400"></span> Connecting...
-        </div>
-        <button id="pwaInstallBtnAdmin" onclick="triggerPwaInstall()" class="hidden bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 px-4 py-2 rounded-xl text-white text-xs font-bold shadow-md transition-all">Install App</button>
-        <button onclick="logout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold">Logout</button>
-      </div>
+      <button onclick="logout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold">Logout</button>
     </header>
     <div class="flex-1 overflow-auto p-4 space-y-4 max-w-6xl mx-auto w-full">
      
-     <!-- Pilot Management -->
+     <!-- Pilot Management with License Inputs -->
      <div class="glossy-card rounded-2xl p-6">
       <h2 class="title-font text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
         <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
@@ -238,25 +216,14 @@
     </div>
    </div>
 
-   <!-- STREAMING_CHUNK: Structuring the directory landing page layout and statistics summary -->
    <!-- User Page - Menu -->
    <div id="userMenuPage" class="hidden flex-1 flex flex-col">
-    <header class="glossy-card m-4 rounded-2xl p-4 flex items-center justify-between flex-wrap gap-3">
+    <header class="glossy-card m-4 rounded-2xl p-4 flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <img src="https://lh3.googleusercontent.com/d/1WmKc-kVzFFQc4wY3GeKFUUUE2Zb8iWcr" alt="TWA Mini Logo" class="w-8 h-8 object-contain mr-1">
+        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
         <h1 class="title-font text-xl font-bold text-slate-800">Pilot Category Directory</h1>
       </div>
-      <div class="flex items-center gap-2">
-        <button onclick="manualSync(this)" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 4.89M9 11l3 3m0 0l3-3m-3 3V4"/></svg>
-          Sync Manual
-        </button>
-        <div class="db-status-badge flex items-center gap-2 bg-slate-100 text-slate-600 border px-3 py-1 rounded-xl text-xs font-semibold">
-          <span class="w-2 h-2 rounded-full bg-slate-400"></span> Connecting...
-        </div>
-        <button id="pwaInstallBtnUser" onclick="triggerPwaInstall()" class="hidden bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 px-4 py-2 rounded-xl text-white text-xs font-bold shadow-md transition-all">Install App</button>
-        <button onclick="logout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold">Logout</button>
-      </div>
+      <button onclick="logout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold">Logout</button>
     </header>
     <div class="flex-1 overflow-auto p-4 space-y-6 max-w-6xl mx-auto w-full">
      
@@ -315,10 +282,9 @@
     </div>
    </div>
 
-   <!-- STREAMING_CHUNK: Designing the search and listing panel for registered pilots -->
    <!-- Pilot List Page -->
    <div id="pilotListPage" class="hidden flex-1 flex flex-col">
-    <header class="glossy-card m-4 rounded-2xl p-4 flex items-center justify-between flex-wrap gap-3">
+    <header class="glossy-card m-4 rounded-2xl p-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <button onclick="backToMenu()" class="p-2 hover:bg-slate-100 rounded-lg transition">
           <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -327,14 +293,10 @@
         </button>
         <h1 id="pilotListTitle" class="title-font text-xl font-bold text-slate-800">Select Pilot</h1>
       </div>
-      <div class="flex items-center gap-3">
-        <div class="db-status-badge flex items-center gap-2 bg-slate-100 text-slate-600 border px-3 py-1 rounded-xl text-xs font-semibold">
-          <span class="w-2 h-2 rounded-full bg-slate-400"></span> Connecting...
-        </div>
-        <button onclick="logout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold">Logout</button>
-      </div>
+      <button onclick="logout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold">Logout</button>
     </header>
     <div class="flex-1 overflow-auto p-4 max-w-5xl mx-auto w-full">
+      <!-- Search bar inside listing -->
       <div class="max-w-md mx-auto mb-6">
         <div class="relative">
           <input type="text" id="pilotSearchInput" oninput="filterPilotsInList()" class="glossy-input w-full pl-10 pr-4 py-2.5 rounded-xl focus:outline-none" placeholder="Search pilot by name...">
@@ -345,10 +307,9 @@
     </div>
    </div>
 
-   <!-- STREAMING_CHUNK: Formatting dynamic forms and analytics widgets inside Pilot Page -->
    <!-- Pilot Data Page -->
    <div id="pilotDataPage" class="hidden flex-1 flex flex-col">
-    <header class="glossy-card m-4 rounded-2xl p-4 flex items-center justify-between flex-wrap gap-3">
+    <header class="glossy-card m-4 rounded-2xl p-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <button onclick="backToPilotList()" class="p-2 hover:bg-slate-100 rounded-lg transition">
           <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -360,14 +321,7 @@
           <span id="pilotCategoryBadge" class="text-[10px] uppercase font-bold tracking-wider text-slate-500">Category</span>
         </div>
       </div>
-      <div class="flex items-center gap-2 flex-wrap">
-        <button onclick="manualSync(this)" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 4.89M9 11l3 3m0 0l3-3m-3 3V4"/></svg>
-          Sync Manual
-        </button>
-        <div class="db-status-badge flex items-center gap-2 bg-slate-100 text-slate-600 border px-3 py-1 rounded-xl text-xs font-semibold mr-1">
-          <span class="w-2 h-2 rounded-full bg-slate-400"></span> Connecting...
-        </div>
+      <div class="flex items-center gap-2">
         <button onclick="exportPilotCSV()" class="glossy-btn-success text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
           Export CSV
@@ -546,55 +500,12 @@
     </div>
    </div>
 
-   <!-- Elegant Manual PWA Installation Guide Modal -->
-   <div id="pwaInstallGuideModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-    <div class="glossy-card rounded-3xl p-6 w-full max-w-md border border-slate-200/40 shadow-2xl space-y-4 text-center">
-      <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 p-1 shadow-md">
-        <img src="https://lh3.googleusercontent.com/d/1WmKc-kVzFFQc4wY3GeKFUUUE2Zb8iWcr" alt="TWA Install Icon" class="w-full h-full object-contain rounded-xl">
-      </div>
-      <h3 class="title-font text-xl font-bold text-slate-800">Install Transwisata Pilot App</h3>
-      <p class="text-xs text-slate-500 leading-relaxed">Nikmati akses operasional lebih cepat, responsif, dan dapat digunakan secara offline langsung dari layar utama handphone Anda.</p>
-      
-      <!-- iOS Guide -->
-      <div id="iosInstallGuide" class="hidden text-left bg-slate-50 rounded-xl p-4 border border-slate-200 text-xs text-slate-700 space-y-2">
-        <div class="font-bold text-indigo-700 flex items-center gap-1">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.15.67-2.87 1.51-.62.73-1.16 1.87-1.01 2.98 1.11.09 2.22-.62 2.89-1.43z"/></svg>
-          Langkah Instalasi di iPhone / iPad (Safari):
-        </div>
-        <ol class="list-decimal pl-4 space-y-1">
-          <li>Ketuk ikon tombol <strong class="text-slate-800">Bagikan (Share)</strong> di bagian menu bawah Safari.</li>
-          <li>Gulir ke bawah dan pilih menu <strong class="text-slate-800">"Tambah ke Layar Utama" (Add to Home Screen)</strong>.</li>
-          <li>Ketuk <strong class="text-slate-800">"Tambah" (Add)</strong> di pojok kanan atas untuk menyelesaikan.</li>
-        </ol>
-      </div>
-
-      <!-- Android/Chrome manual guide if prompt fails -->
-      <div id="androidInstallGuide" class="hidden text-left bg-slate-50 rounded-xl p-4 border border-slate-200 text-xs text-slate-700 space-y-2">
-        <div class="font-bold text-indigo-700 flex items-center gap-1">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-          Langkah Instalasi di Android / Chrome:
-        </div>
-        <ol class="list-decimal pl-4 space-y-1">
-          <li>Ketuk ikon <strong class="text-slate-800">Tiga Titik Menu</strong> di pojok kanan atas browser Chrome.</li>
-          <li>Pilih opsi <strong class="text-slate-800">"Instal Aplikasi" (Install App)</strong> atau <strong class="text-slate-800">"Tambahkan ke Layar Utama"</strong>.</li>
-          <li>Konfirmasi instalasi pada kotak dialog yang muncul.</li>
-        </ol>
-      </div>
-
-      <div class="flex gap-2">
-        <button id="pwaModalInstallBtn" onclick="executePwaInstallPrompt()" class="hidden glossy-btn py-2.5 rounded-xl text-white font-semibold flex-1 text-xs">Instal Sekarang</button>
-        <button onclick="closePwaInstallGuide()" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 px-5 py-2.5 rounded-xl text-xs font-semibold transition flex-1">Tutup</button>
-      </div>
-    </div>
-   </div>
-
    <!-- Footer -->
    <footer class="glossy-card m-4 mt-0 rounded-2xl p-3 text-center">
     <p class="text-slate-600 text-xs font-semibold tracking-wide">Copyright 2026 by SkyOps Solution — Transwisata Flight Support</p>
    </footer>
   </div>
 
-  <!-- STREAMING_CHUNK: Starting the Javascript engine and Google Sheets connection definitions -->
   <script>
     // Default config values
     const defaultConfig = {
@@ -613,455 +524,147 @@
     let editingPilotOriginalName = null;
     let editingPilotOriginalType = null;
 
-    // Google Sheets Apps Script URL (Sole Database Source of Truth)
-    let appsScriptUrl = 'https://script.google.com/macros/s/AKfycbzm17ZkV1hzFuwe-Y3extZLDa84ZOTX16HQ3HLNPwn4L7HWAWuVF1ItE-dKNDJ3qSl9/exec';
+    // Core Pilots Database Arrays (Modified to Objects containing License)
+    let fixedWingPilots = [
+      { name: 'Capt. Susetyo H', license: 'ATPL-4102' },
+      { name: 'Capt. Purwoko', license: 'ATPL-2938' },
+      { name: 'Capt. S.M.L.Tobing', license: 'ATPL-3841' },
+      { name: 'Capt. M. Sofwan', license: 'ATPL-1029' },
+      { name: 'Capt. Eli Setya', license: 'ATPL-5829' },
+      { name: 'Capt. Alfajri', license: 'ATPL-4721' },
+      { name: 'Capt. Rico F', license: 'ATPL-8392' },
+      { name: 'FO. Riza H', license: 'CPL-9021' },
+      { name: 'FO. Wawan S', license: 'CPL-4820' },
+      { name: 'FO. Henaldy A.S', license: 'CPL-3810' },
+      { name: 'FO. K. A. N. Berliana', license: 'CPL-2891' }
+    ];
 
-    // Core Pilots Database Arrays (Initialized empty, populated purely by GSheets)
-    let fixedWingPilots = [];
-    let rotaryWingPilots = [];
+    let rotaryWingPilots = [
+      { name: 'Capt. Marcelino B', license: 'ATPL-H-8821' },
+      { name: 'Capt. S. Teddy P', license: 'ATPL-H-3910' },
+      { name: 'Capt. M. Ramdani M', license: 'ATPL-H-4720' }
+    ];
 
-    // Auth Database - Fail-Safe Default Admin Credentials
-    const defaultUsers = [
+    // Auth Database
+    let users = [
       { username: 'Admin', password: 'monitorketua', role: 'admin' },
       { username: 'flightsupport@pt-twa.co.id', password: 'flopstwa021', role: 'user' }
     ];
-    let users = [...defaultUsers];
 
-    // --- PWA INSTALLATION SERVICE ENGINE ---
-    let deferredPrompt = null;
-
-    function initializePwaSuite() {
-      const manifestObj = {
-        "short_name": "TWA Pilot",
-        "name": "Transwisata Pilot Consecutive Days",
-        "icons": [
-          {
-            "src": "https://lh3.googleusercontent.com/d/1WmKc-kVzFFQc4wY3GeKFUUUE2Zb8iWcr",
-            "type": "image/png",
-            "sizes": "512x512",
-            "purpose": "any maskable"
-          }
-        ],
-        "start_url": ".",
-        "background_color": "#020617",
-        "theme_color": "#0f172a",
-        "display": "standalone",
-        "orientation": "portrait"
-      };
-      
-      const manifestStr = JSON.stringify(manifestObj);
-      const manifestUri = "data:application/manifest+json," + encodeURIComponent(manifestStr);
-      document.getElementById('pwa-manifest').setAttribute('href', manifestUri);
-
-      if ('serviceWorker' in navigator) {
-        const swInlineScript = `
-          self.addEventListener('install', (e) => {
-            self.skipWaiting();
-          });
-          self.addEventListener('activate', (e) => {
-            e.waitUntil(self.clients.claim());
-          });
-          self.addEventListener('fetch', (e) => {
-            e.respondWith(fetch(e.request).catch(() => new Response("Offline mode active.")));
-          });
-        `;
-        const swBlob = new Blob([swInlineScript], { type: 'application/javascript' });
-        const swUrl = URL.createObjectURL(swBlob);
-        navigator.serviceWorker.register(swUrl).catch(err => {
-          console.log('SW registration deferred inside collaborative context.', err);
-        });
-      }
-
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        document.getElementById('pwaInstallBtnAdmin').classList.remove('hidden');
-        document.getElementById('pwaInstallBtnUser').classList.remove('hidden');
-      });
-
-      window.addEventListener('appinstalled', () => {
-        deferredPrompt = null;
-        document.getElementById('pwaInstallBtnAdmin').classList.add('hidden');
-        document.getElementById('pwaInstallBtnUser').classList.add('hidden');
-        showInlineMessage('Transwisata App successfully installed!', 'success');
-      });
-    }
-
-    function triggerPwaInstall() {
-      const guideModal = document.getElementById('pwaInstallGuideModal');
-      const iosSection = document.getElementById('iosInstallGuide');
-      const androidSection = document.getElementById('androidInstallGuide');
-      const directBtn = document.getElementById('pwaModalInstallBtn');
-
-      guideModal.classList.remove('hidden');
-      const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-      
-      if (deferredPrompt) {
-        directBtn.classList.remove('hidden');
-        iosSection.classList.add('hidden');
-        androidSection.classList.add('hidden');
-      } else if (isIos) {
-        directBtn.classList.add('hidden');
-        iosSection.classList.remove('hidden');
-        androidSection.classList.add('hidden');
-      } else {
-        directBtn.classList.add('hidden');
-        iosSection.classList.add('hidden');
-        androidSection.classList.remove('hidden');
-      }
-    }
-
-    function executePwaInstallPrompt() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          closePwaInstallGuide();
-        });
-      }
-    }
-
-    function closePwaInstallGuide() {
-      document.getElementById('pwaInstallGuideModal').classList.add('hidden');
-    }
-
-    // --- GOOGLE SHEETS API IMPLEMENTATIONS (Strict cloud writes) ---
-    
-    // Fetch and load everything from Google Sheets
-    async function loadFromGoogleSheets() {
-      if (!appsScriptUrl) return false;
-      try {
-        const response = await fetch(appsScriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ action: 'readAll' })
-        });
-        const data = await response.json();
-        if (data && data.isOk) {
-          // Sync Pilots
-          const incomingFixed = [];
-          const incomingRotary = [];
-          if (data.pilots && data.pilots.length > 0) {
-            data.pilots.forEach(p => {
-              const pObj = { name: p.name, license: p.license };
-              if (p.type === 'fixed') incomingFixed.push(pObj);
-              else if (p.type === 'rotary') incomingRotary.push(pObj);
-            });
-            fixedWingPilots = incomingFixed;
-            rotaryWingPilots = incomingRotary;
-          } else {
-            fixedWingPilots = [];
-            rotaryWingPilots = [];
-          }
-
-          // Sync Flight Logs
-          if (data.flights) {
-            allFlightData = data.flights.map(f => ({
-              __backendId: f.__backendId,
-              type: 'flight',
-              pilotName: f.pilotName,
-              pilotType: f.pilotType,
-              dateMission: f.dateMission,
-              flightTime: sanitizeFlightTime(f.flightTime),
-              route: f.route,
-              createdAt: f.createdAt
-            }));
-          } else {
-            allFlightData = [];
-          }
-
-          // Sync Users
-          if (data.users && data.users.length > 0) {
-            const mergedUsers = [...defaultUsers];
-            data.users.forEach(u => {
-              if (!mergedUsers.some(us => us.username.toLowerCase() === u.username.toLowerCase())) {
-                mergedUsers.push({ username: u.username, password: u.password, role: u.role });
-              }
-            });
-            users = mergedUsers;
-          } else {
-            users = [...defaultUsers];
-          }
-
-          setConnectionStatus(true);
-          return true;
-        }
-      } catch (err) {
-        console.error("GSheets Fetch Loading Failed:", err);
-      }
-      setConnectionStatus(false);
-      return false;
-    }
-
-    function setConnectionStatus(connected) {
-      const badges = document.querySelectorAll('.db-status-badge');
-      badges.forEach(badge => {
-        if (connected) {
-          badge.className = "flex items-center gap-2 bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-xl text-xs font-bold db-status-badge";
-          badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Google Sheets: Connected`;
-        } else {
-          badge.className = "flex items-center gap-2 bg-rose-500/15 text-rose-400 border border-rose-500/30 px-3 py-1 rounded-xl text-xs font-bold db-status-badge";
-          badge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Google Sheets: Offline`;
-        }
-      });
-    }
-
-    // Auto seed helper if sheet is completely fresh/empty
-    async function seedDefaultDataToCloud() {
-      showInlineMessage('Auto-seeding default pilots to Google Sheets...', 'success');
-      const defaultFixed = [
-        { name: 'Capt. Susetyo H', license: 'ATPL-4102' },
-        { name: 'Capt. Purwoko', license: 'ATPL-2938' },
-        { name: 'Capt. S.M.L.Tobing', license: 'ATPL-3841' },
-        { name: 'Capt. M. Sofwan', license: 'ATPL-1029' },
-        { name: 'Capt. Eli Setya', license: 'ATPL-5829' },
-        { name: 'Capt. Alfajri', license: 'ATPL-4721' },
-        { name: 'Capt. Rico F', license: 'ATPL-8392' },
-        { name: 'FO. Riza H', license: 'CPL-9021' },
-        { name: 'FO. Wawan S', license: 'CPL-4820' },
-        { name: 'FO. Henaldy A.S', license: 'CPL-3810' },
-        { name: 'FO. K. A. N. Berliana', license: 'CPL-2891' }
-      ];
-      const defaultRotary = [
-        { name: 'Capt. Marcelino B', license: 'ATPL-H-8821' },
-        { name: 'Capt. S. Teddy P', license: 'ATPL-H-3910' },
-        { name: 'Capt. M. Ramdani M', license: 'ATPL-H-4720' }
-      ];
-
-      for (const p of defaultFixed) {
-        await apiSavePilot(p.name, p.license, 'fixed');
-      }
-      for (const p of defaultRotary) {
-        await apiSavePilot(p.name, p.license, 'rotary');
-      }
-      
-      // Load back
-      await loadFromGoogleSheets();
-      refreshAllUI();
-    }
-
-    // Single Pilot Save
-    async function apiSavePilot(name, license, type) {
-      if (!appsScriptUrl) return false;
-      try {
-        const res = await fetch(appsScriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            action: 'savePilot',
-            id: name,
-            name: name,
-            license: license,
-            type: type,
-            createdAt: new Date().toISOString()
-          })
-        });
-        const data = await res.json();
-        return data.isOk;
-      } catch (e) {
-        console.error("apiSavePilot Failed:", e);
-        return false;
-      }
-    }
-
-    // Single Pilot Remove
-    async function apiDeletePilot(name) {
-      if (!appsScriptUrl) return false;
-      try {
-        const res = await fetch(appsScriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            action: 'deletePilot',
-            id: name
-          })
-        });
-        const data = await res.json();
-        return data.isOk;
-      } catch (e) {
-        console.error("apiDeletePilot Failed:", e);
-        return false;
-      }
-    }
-
-    // Single Flight Save (Log)
-    async function apiSaveFlight(flight) {
-      if (!appsScriptUrl) return false;
-      try {
-        const res = await fetch(appsScriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            action: 'saveFlight',
-            __backendId: flight.__backendId,
-            pilotName: flight.pilotName,
-            pilotType: flight.pilotType,
-            dateMission: flight.dateMission,
-            flightTime: flight.flightTime,
-            route: flight.route,
-            createdAt: flight.createdAt
-          })
-        });
-        const data = await res.json();
-        return data.isOk;
-      } catch(e) {
-        console.error("apiSaveFlight Failed:", e);
-        return false;
-      }
-    }
-
-    // Single Flight Remove
-    async function apiDeleteFlight(id) {
-      if (!appsScriptUrl) return false;
-      try {
-        const res = await fetch(appsScriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            action: 'deleteFlight',
-            id: id
-          })
-        });
-        const data = await res.json();
-        return data.isOk;
-      } catch(e) {
-        console.error("apiDeleteFlight Failed:", e);
-        return false;
-      }
-    }
-
-    // Consolidated Batch Flights Upload
-    async function apiSaveFlightsBatch(flightsArray) {
-      if (!appsScriptUrl) return false;
-      try {
-        const res = await fetch(appsScriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            action: 'saveFlightsBatch',
-            flights: flightsArray
-          })
-        });
-        const data = await res.json();
-        return data.isOk;
-      } catch(e) {
-        console.error("apiSaveFlightsBatch Failed:", e);
-        return false;
-      }
-    }
-
-    // Add User Credential
-    async function apiSaveUser(username, password, role) {
-      if (!appsScriptUrl) return false;
-      try {
-        const res = await fetch(appsScriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            action: 'saveUser',
-            username,
-            password,
-            role
-          })
-        });
-        const data = await res.json();
-        return data.isOk;
-      } catch (e) {
-        console.error("apiSaveUser Failed:", e);
-        return false;
-      }
-    }
-
-    // Remove User Credential
-    async function apiDeleteUser(username) {
-      if (!appsScriptUrl) return false;
-      try {
-        const res = await fetch(appsScriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            action: 'deleteUser',
-            username
-          })
-        });
-        const data = await res.json();
-        return data.isOk;
-      } catch (e) {
-        console.error("apiDeleteUser Failed:", e);
-        return false;
-      }
-    }
-
-    // Main App Initialization
+    // Main App Initialization with SDK/Local Storage Dual Sync
     async function initApp() {
-      // Setup Custom Installable PWA Parameters
-      initializePwaSuite();
-
-      fixedWingPilots = [];
-      rotaryWingPilots = [];
-      allFlightData = [];
-      users = [...defaultUsers];
-
-      // Sync and retrieve master database from Google Sheet as default
-      const loaded = await loadFromGoogleSheets();
-      if (loaded) {
-        showInlineMessage('Database Google Sheets Aktif!', 'success');
-        
-        // Auto-seed if the cloud database returned absolutely 0 pilots
-        if (fixedWingPilots.length === 0 && rotaryWingPilots.length === 0) {
-          await seedDefaultDataToCloud();
-        }
-      } else {
-        showInlineMessage('Koneksi Google Sheets gagal! Berjalan dalam mode Terbatas.', 'error');
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange: async (config) => {
+            const title = config.app_title || defaultConfig.app_title;
+            document.getElementById('appTitle').textContent = title;
+          },
+          mapToCapabilities: (config) => ({
+            recolorables: [],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (config) => new Map([
+            ['app_title', config.app_title || defaultConfig.app_title]
+          ])
+        });
       }
 
+      if (window.dataSdk) {
+        try {
+          const result = await window.dataSdk.init({
+            onDataChanged: (data) => {
+              allFlightData = data.filter(d => d.type === 'flight');
+              const pilotData = data.filter(d => d.type === 'pilot');
+              const userData = data.filter(d => d.type === 'user');
+
+              // Syncing dynamically added pilots from backend
+              pilotData.forEach(p => {
+                const targetName = p.pilotName;
+                const licenseNo = p.route || 'N/A'; // Use route or native license if defined
+                
+                if (p.pilotType === 'fixed' && !fixedWingPilots.some(f => f.name === targetName)) {
+                  fixedWingPilots.push({ name: targetName, license: licenseNo });
+                } else if (p.pilotType === 'rotary' && !rotaryWingPilots.some(r => r.name === targetName)) {
+                  rotaryWingPilots.push({ name: targetName, license: licenseNo });
+                }
+              });
+
+              // Syncing system users dynamically
+              userData.forEach(u => {
+                if (!users.find(us => us.username === u.pilotName)) {
+                  users.push({ username: u.pilotName, password: u.route, role: 'user' });
+                }
+              });
+
+              refreshAllUI();
+            }
+          });
+
+          if (!result.isOk) {
+            console.warn('Backend Data SDK initialization failed, utilizing Local Database fallback mode.');
+            loadLocalStorageFallback();
+          }
+        } catch(e) {
+          console.warn('Data SDK error, starting local sync fallback database.', e);
+          loadLocalStorageFallback();
+        }
+      } else {
+        loadLocalStorageFallback();
+      }
+
+      // Offline database loader
+      loadStaticBackups();
+    }
+
+    // Fallback sync functions to allow absolute offline/local operations
+    function loadLocalStorageFallback() {
+      const storedFlights = localStorage.getItem('local_flights_db');
+      if (storedFlights) {
+        allFlightData = JSON.parse(storedFlights);
+      }
       refreshAllUI();
     }
 
-    // Manual Sync trigger
-    async function manualSync(btnElement) {
-      if (btnElement) {
-        btnElement.disabled = true;
-        const originalHTML = btnElement.innerHTML;
-        btnElement.innerHTML = `
-          <svg class="animate-spin h-3.5 w-3.5 mr-1 text-white inline-block" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-          Syncing...
-        `;
-        try {
-          const loaded = await loadFromGoogleSheets();
-          if (loaded) {
-            showInlineMessage('Data berhasil disinkronkan dari Google Sheets!', 'success');
-          } else {
-            showInlineMessage('Gagal sinkronisasi data dari Google Sheets!', 'error');
+    function syncLocalDatabase() {
+      localStorage.setItem('local_flights_db', JSON.stringify(allFlightData));
+      refreshAllUI();
+    }
+
+    function loadStaticBackups() {
+      const storedPilots = localStorage.getItem('pilots_v2'); // Increment version for objects structure
+      const storedUsers = localStorage.getItem('users');
+      
+      if (storedPilots) {
+        const pilots = JSON.parse(storedPilots);
+        pilots.forEach(p => {
+          if (p.type === 'fixed' && !fixedWingPilots.some(fw => fw.name === p.name)) {
+            fixedWingPilots.push({ name: p.name, license: p.license || 'N/A' });
+          } else if (p.type === 'rotary' && !rotaryWingPilots.some(rw => rw.name === p.name)) {
+            rotaryWingPilots.push({ name: p.name, license: p.license || 'N/A' });
           }
-          refreshAllUI();
-        } catch (e) {
-          console.error(e);
-          showInlineMessage('Terjadi kesalahan saat sinkronisasi!', 'error');
-        } finally {
-          btnElement.disabled = false;
-          btnElement.innerHTML = originalHTML;
-        }
+        });
+      }
+      
+      if (storedUsers) {
+        const storedUserList = JSON.parse(storedUsers);
+        storedUserList.forEach(u => {
+          if (!users.find(us => us.username === u.username)) {
+            users.push(u);
+          }
+        });
       }
     }
 
-    // Client-side sanitizer to restore hh:mm standard format
-    function sanitizeFlightTime(timeStr) {
-      if (!timeStr) return '00:00';
-      timeStr = String(timeStr).trim();
-      
-      if (timeStr.includes('T') || (timeStr.includes('-') && timeStr.length > 10)) {
-        try {
-          const d = new Date(timeStr);
-          if (!isNaN(d.getTime())) {
-            const hh = String(d.getHours()).padStart(2, '0');
-            const mm = String(d.getMinutes()).padStart(2, '0');
-            return `${hh}:${mm}`;
-          }
-        } catch (e) {
-          return '00:00';
-        }
-      }
-      return timeStr;
+    function saveStaticBackups() {
+      const pilots = [
+        ...fixedWingPilots.map(p => ({ name: p.name, license: p.license, type: 'fixed' })),
+        ...rotaryWingPilots.map(p => ({ name: p.name, license: p.license, type: 'rotary' }))
+      ];
+      localStorage.setItem('pilots_v2', JSON.stringify(pilots));
+      localStorage.setItem('users', JSON.stringify(users.filter(u => u.role === 'user')));
     }
 
     // Refresh UI trigger across active layouts
@@ -1080,8 +683,7 @@
       const password = document.getElementById('password').value;
       const errorEl = document.getElementById('loginError');
 
-      const combinedUsers = [...users];
-      const user = combinedUsers.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+      const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
       
       if (user) {
         currentUser = user;
@@ -1116,7 +718,7 @@
       document.getElementById(pageId).classList.remove('hidden');
     }
 
-    /* STREAMING_CHUNK: Rendering pilots inside the Admin Dashboard tables with click toggles */
+    <!-- STREAMING_CHUNK: Managing pilot entries and rendering lists on the Admin page -->
     // Admin dashboard handlers
     function renderAdminLists() {
       const fixedList = document.getElementById('fixedPilotList');
@@ -1132,7 +734,7 @@
             </div>
             <div class="flex gap-2">
               <button onclick="editPilot('fixed', '${p.name.replace(/'/g, "\\'")}')" class="text-blue-600 hover:text-blue-800 font-bold text-xs transition">Edit</button>
-              <button id="del-fixed-${p.name.replace(/[^a-zA-Z0-9]/g, '')}" data-confirm="false" onclick="confirmRemovePilot('fixed', '${p.name.replace(/'/g, "\\'")}')" class="text-red-500 hover:text-red-700 font-bold text-xs transition">Remove</button>
+              <button onclick="removePilot('fixed', '${p.name.replace(/'/g, "\\'")}')" class="text-red-500 hover:text-red-700 font-bold text-xs transition">Remove</button>
             </div>
           </div>
         `).join('');
@@ -1147,7 +749,7 @@
             </div>
             <div class="flex gap-2">
               <button onclick="editPilot('rotary', '${p.name.replace(/'/g, "\\'")}')" class="text-blue-600 hover:text-blue-800 font-bold text-xs transition">Edit</button>
-              <button id="del-rotary-${p.name.replace(/[^a-zA-Z0-9]/g, '')}" data-confirm="false" onclick="confirmRemovePilot('rotary', '${p.name.replace(/'/g, "\\'")}')" class="text-red-500 hover:text-red-700 font-bold text-xs transition">Remove</button>
+              <button onclick="removePilot('rotary', '${p.name.replace(/'/g, "\\'")}')" class="text-red-500 hover:text-red-700 font-bold text-xs transition">Remove</button>
             </div>
           </div>
         `).join('');
@@ -1157,7 +759,7 @@
         userList.innerHTML = users.filter(u => u.role === 'user').map(u => `
           <div class="flex items-center justify-between bg-white rounded-lg px-3 py-2 border shadow-sm">
             <span class="text-sm font-semibold text-slate-700">${u.username}</span>
-            <button id="del-user-${u.username.replace(/[^a-zA-Z0-9]/g, '')}" data-confirm="false" onclick="confirmRemoveUser('${u.username}')" class="text-red-500 hover:text-red-700 font-bold text-xs transition">Remove</button>
+            <button onclick="removeUser('${u.username}')" class="text-red-500 hover:text-red-700 font-bold text-xs transition">Remove</button>
           </div>
         `).join('');
       }
@@ -1190,7 +792,6 @@
       document.getElementById('cancelPilotEditBtn').classList.add('hidden');
     }
 
-    /* STREAMING_CHUNK: Processing pilot save updates directly to Google Sheets database */
     async function addPilot() {
       const name = document.getElementById('newPilotName').value.trim();
       const license = document.getElementById('newPilotLicense').value.trim() || 'N/A';
@@ -1201,86 +802,83 @@
         return;
       }
 
-      const btn = document.getElementById('addPilotBtn');
-      btn.disabled = true;
-      btn.textContent = 'Saving to Google Sheets...';
-
-      try {
-        if (editingPilotOriginalName) {
-          // Updating existing pilot
-          if (editingPilotOriginalName !== name) {
-            await apiDeletePilot(editingPilotOriginalName);
+      if (editingPilotOriginalName) {
+        // Updating existing pilot
+        // 1. Remove from old category list if type changes, or update name & license directly
+        if (editingPilotOriginalType === type) {
+          const list = type === 'fixed' ? fixedWingPilots : rotaryWingPilots;
+          const idx = list.findIndex(p => p.name === editingPilotOriginalName);
+          if (idx !== -1) {
+            list[idx].name = name;
+            list[idx].license = license;
           }
-          const ok = await apiSavePilot(name, license, type);
-          if (ok) {
-            // Update flights associated with this pilot on GSheets
-            const associatedFlights = allFlightData.filter(f => f.pilotName === editingPilotOriginalName);
-            if (associatedFlights.length > 0) {
-              const updatedFlights = associatedFlights.map(f => {
-                f.pilotName = name;
-                f.pilotType = type;
-                return f;
-              });
-              await apiSaveFlightsBatch(updatedFlights);
-            }
-            showInlineMessage('Pilot successfully updated on Google Sheets!', 'success');
-          } else {
-            showInlineMessage('Gagal memperbarui pilot ke cloud.', 'error');
-          }
-          cancelEditPilot();
         } else {
-          // Adding new pilot
-          const ok = await apiSavePilot(name, license, type);
-          if (ok) {
-            showInlineMessage('Pilot successfully added to Google Sheets!', 'success');
-            document.getElementById('newPilotName').value = '';
-            document.getElementById('newPilotLicense').value = '';
+          // Type changed, migrate list arrays
+          if (editingPilotOriginalType === 'fixed') {
+            fixedWingPilots = fixedWingPilots.filter(p => p.name !== editingPilotOriginalName);
           } else {
-            showInlineMessage('Gagal menambahkan pilot ke cloud.', 'error');
+            rotaryWingPilots = rotaryWingPilots.filter(p => p.name !== editingPilotOriginalName);
           }
+          const list = type === 'fixed' ? fixedWingPilots : rotaryWingPilots;
+          list.push({ name, license });
         }
 
-        // Strict re-fetch from Sheets
-        await loadFromGoogleSheets();
-        refreshAllUI();
-      } catch(e) {
-        console.error(e);
-        showInlineMessage('Gagal memproses data!', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = editingPilotOriginalName ? 'Update Pilot' : 'Add Pilot';
+        // 2. Cascade changes to all history flights of this pilot
+        allFlightData.forEach(f => {
+          if (f.pilotName === editingPilotOriginalName) {
+            f.pilotName = name;
+            f.pilotType = type;
+          }
+        });
+        syncLocalDatabase();
+
+        cancelEditPilot();
+        showInlineMessage('Pilot records successfully updated', 'success');
+      } else {
+        // Adding new pilot
+        if (type === 'fixed') {
+          if (fixedWingPilots.some(p => p.name === name)) {
+            showInlineMessage('Pilot already exists', 'error');
+            return;
+          }
+          fixedWingPilots.push({ name, license });
+        } else {
+          if (rotaryWingPilots.some(p => p.name === name)) {
+            showInlineMessage('Pilot already exists', 'error');
+            return;
+          }
+          rotaryWingPilots.push({ name, license });
+        }
+
+        if (window.dataSdk) {
+          await window.dataSdk.create({
+            type: 'pilot',
+            pilotName: name,
+            pilotType: type,
+            dateMission: '',
+            flightTime: '',
+            route: license, // Use route column to store license cleanly
+            createdAt: new Date().toISOString()
+          });
+        }
+        document.getElementById('newPilotName').value = '';
+        document.getElementById('newPilotLicense').value = '';
+        showInlineMessage('Pilot successfully added', 'success');
       }
+
+      saveStaticBackups();
+      refreshAllUI();
     }
 
-    async function confirmRemovePilot(type, name) {
-      const safeId = `del-${type}-${name.replace(/[^a-zA-Z0-9]/g, '')}`;
-      const btn = document.getElementById(safeId);
-      if (!btn) return;
-      
-      if (btn.dataset.confirm === 'true') {
-        btn.disabled = true;
-        btn.textContent = '...';
-        const ok = await apiDeletePilot(name);
-        if (ok) {
-          showInlineMessage('Pilot berhasil dihapus dari Google Sheets!', 'success');
-          await loadFromGoogleSheets();
-          refreshAllUI();
-        } else {
-          showInlineMessage('Gagal menghapus pilot!', 'error');
-          btn.disabled = false;
-          btn.textContent = 'Remove';
-          btn.dataset.confirm = 'false';
-        }
+    function removePilot(type, name) {
+      if (type === 'fixed') {
+        fixedWingPilots = fixedWingPilots.filter(p => p.name !== name);
       } else {
-        btn.dataset.confirm = 'true';
-        btn.textContent = 'Confirm?';
-        btn.className = "text-rose-600 font-black text-xs transition";
-        setTimeout(() => {
-          btn.dataset.confirm = 'false';
-          btn.textContent = 'Remove';
-          btn.className = "text-red-500 hover:text-red-700 font-bold text-xs transition";
-        }, 3000);
+        rotaryWingPilots = rotaryWingPilots.filter(p => p.name !== name);
       }
+      saveStaticBackups();
+      refreshAllUI();
+      showInlineMessage('Pilot successfully removed', 'success');
     }
 
     async function addUser() {
@@ -1297,50 +895,35 @@
         return;
       }
 
-      const ok = await apiSaveUser(username, password, 'user');
-      if (ok) {
-        showInlineMessage('Credential user successfully added to Google Sheets!', 'success');
-        document.getElementById('newUsername').value = '';
-        document.getElementById('newPassword').value = '';
-        await loadFromGoogleSheets();
-        refreshAllUI();
-      } else {
-        showInlineMessage('Gagal menyimpan user ke cloud.', 'error');
+      users.push({ username, password, role: 'user' });
+      
+      if (window.dataSdk) {
+        await window.dataSdk.create({
+          type: 'user',
+          pilotName: username,
+          pilotType: '',
+          dateMission: '',
+          flightTime: '',
+          route: password,
+          createdAt: new Date().toISOString()
+        });
       }
+
+      document.getElementById('newUsername').value = '';
+      document.getElementById('newPassword').value = '';
+      saveStaticBackups();
+      refreshAllUI();
+      showInlineMessage('Credential user successfully added', 'success');
     }
 
-    async function confirmRemoveUser(username) {
-      const safeId = `del-user-${username.replace(/[^a-zA-Z0-9]/g, '')}`;
-      const btn = document.getElementById(safeId);
-      if (!btn) return;
-
-      if (btn.dataset.confirm === 'true') {
-        btn.disabled = true;
-        btn.textContent = '...';
-        const ok = await apiDeleteUser(username);
-        if (ok) {
-          showInlineMessage('User berhasil dihapus!', 'success');
-          await loadFromGoogleSheets();
-          refreshAllUI();
-        } else {
-          showInlineMessage('Gagal menghapus user!', 'error');
-          btn.disabled = false;
-          btn.textContent = 'Remove';
-          btn.dataset.confirm = 'false';
-        }
-      } else {
-        btn.dataset.confirm = 'true';
-        btn.textContent = 'Confirm?';
-        btn.className = "text-rose-600 font-black text-xs transition";
-        setTimeout(() => {
-          btn.dataset.confirm = 'false';
-          btn.textContent = 'Remove';
-          btn.className = "text-red-500 hover:text-red-700 font-bold text-xs transition";
-        }, 3000);
-      }
+    function removeUser(username) {
+      users = users.filter(u => u.username !== username);
+      saveStaticBackups();
+      refreshAllUI();
+      showInlineMessage('Credential user removed', 'success');
     }
 
-    /* STREAMING_CHUNK: Formatting summary calculations into hourly grids */
+    <!-- STREAMING_CHUNK: Building the summary layout and generating reports in PDF formats -->
     // Render pilot metrics overview table with hh:mm duration format
     function renderMenuSummaryTable() {
       const container = document.getElementById('menuSummaryTableContainer');
@@ -1373,8 +956,7 @@
 
           let totalMinutes = 0;
           periodFlights.forEach(f => {
-            const sanitizedTime = sanitizeFlightTime(f.flightTime);
-            const parts = sanitizedTime.split(':');
+            const parts = f.flightTime.split(':');
             if(parts.length === 2) {
               const [hours, mins] = parts.map(Number);
               totalMinutes += (hours * 60) + mins;
@@ -1490,6 +1072,7 @@
       const pilots = type === 'fixed' ? fixedWingPilots : rotaryWingPilots;
       const container = document.getElementById('pilotListContainer');
       
+      // Clear pilot search
       document.getElementById('pilotSearchInput').value = '';
 
       container.innerHTML = pilots.map(p => `
@@ -1514,6 +1097,7 @@
       currentPilot = name;
       document.getElementById('selectedPilotName').textContent = name;
       
+      // Find License Number
       const pObj = [...fixedWingPilots, ...rotaryWingPilots].find(p => p.name === name);
       const licenseNum = pObj ? pObj.license : 'N/A';
 
@@ -1532,6 +1116,7 @@
       const limit7 = currentPilotType === 'fixed' ? 35 : 40;
       document.getElementById('limit7').textContent = `Max: ${limit7}h`;
       
+      // Reset logging variables
       document.getElementById('dateMission').value = '';
       document.getElementById('flightTime').value = '';
       document.getElementById('route').value = '';
@@ -1553,11 +1138,10 @@
       showPage('pilotListPage');
     }
 
-    /* STREAMING_CHUNK: Processing records for flight history logging strictly to GSheets */
     // Record Operations
     async function saveFlightData() {
       const dateMission = document.getElementById('dateMission').value;
-      const flightTime = sanitizeFlightTime(document.getElementById('flightTime').value.trim());
+      const flightTime = document.getElementById('flightTime').value.trim();
       const route = document.getElementById('route').value.trim();
 
       if (!dateMission || !flightTime || !route) {
@@ -1565,6 +1149,7 @@
         return;
       }
 
+      // Validating time format (hh:mm)
       if (!/^\d{1,2}:\d{2}$/.test(flightTime)) {
         showInlineMessage('Use correct hh:mm standard format.', 'error');
         return;
@@ -1572,28 +1157,36 @@
 
       const btn = document.getElementById('saveBtn');
       btn.disabled = true;
-      btn.textContent = 'Saving to Google Sheets...';
+      btn.textContent = 'Saving flight...';
 
       try {
         if (editingFlightId) {
-          const record = allFlightData.find(f => f.__backendId === editingFlightId);
-          if (record) {
-            record.dateMission = dateMission;
-            record.flightTime = flightTime;
-            record.route = route;
-
-            const ok = await apiSaveFlight(record);
-            if (ok) {
-              showInlineMessage('Flight log updated on Google Sheets!', 'success');
-              editingFlightId = null;
-              document.getElementById('cancelBtn').classList.add('hidden');
-              document.getElementById('dateMission').value = '';
-              document.getElementById('flightTime').value = '';
-              document.getElementById('route').value = '';
-            } else {
-              showInlineMessage('Gagal menyimpan ke Google Sheets!', 'error');
+          if (window.dataSdk) {
+            const record = allFlightData.find(f => f.__backendId === editingFlightId);
+            if (record) {
+              const result = await window.dataSdk.update({
+                ...record,
+                dateMission,
+                flightTime,
+                route
+              });
+              if (!result.isOk) {
+                showInlineMessage('Failed to save to database server', 'error');
+              }
+            }
+          } else {
+            // Local fallback logic
+            const index = allFlightData.findIndex(f => f.__backendId === editingFlightId);
+            if(index !== -1) {
+              allFlightData[index].dateMission = dateMission;
+              allFlightData[index].flightTime = flightTime;
+              allFlightData[index].route = route;
+              syncLocalDatabase();
             }
           }
+          editingFlightId = null;
+          document.getElementById('cancelBtn').classList.add('hidden');
+          showInlineMessage('Flight log updated successfully', 'success');
         } else {
           const newPayload = {
             __backendId: 'local_' + Date.now(),
@@ -1606,25 +1199,28 @@
             createdAt: new Date().toISOString()
           };
 
-          const ok = await apiSaveFlight(newPayload);
-          if (ok) {
-            showInlineMessage('Flight log created on Google Sheets!', 'success');
-            document.getElementById('dateMission').value = '';
-            document.getElementById('flightTime').value = '';
-            document.getElementById('route').value = '';
+          if (window.dataSdk) {
+            const result = await window.dataSdk.create(newPayload);
+            if (!result.isOk) {
+              showInlineMessage('Failed to synchronize with server', 'error');
+            }
           } else {
-            showInlineMessage('Gagal menyimpan ke Google Sheets!', 'error');
+            allFlightData.push(newPayload);
+            syncLocalDatabase();
           }
+          showInlineMessage('Flight log created successfully', 'success');
         }
 
-        // STRICT re-fetch to ensure the UI is fully synchronized from GSheets
-        await loadFromGoogleSheets();
-        refreshAllUI();
+        // Reset Inputs
+        document.getElementById('dateMission').value = '';
+        document.getElementById('flightTime').value = '';
+        document.getElementById('route').value = '';
       } catch(e) {
         showInlineMessage('Error saving flight log', 'error');
       } finally {
         btn.disabled = false;
         btn.textContent = 'Save Record';
+        refreshAllUI();
       }
     }
 
@@ -1642,7 +1238,7 @@
       if (flight) {
         editingFlightId = id;
         document.getElementById('dateMission').value = flight.dateMission;
-        document.getElementById('flightTime').value = sanitizeFlightTime(flight.flightTime);
+        document.getElementById('flightTime').value = flight.flightTime;
         document.getElementById('route').value = flight.route;
         document.getElementById('cancelBtn').classList.remove('hidden');
         document.getElementById('saveBtn').textContent = 'Update';
@@ -1654,7 +1250,7 @@
       const flight = allFlightData.find(f => f.__backendId === id);
       if (flight) {
         document.getElementById('dateMission').value = flight.dateMission;
-        document.getElementById('flightTime').value = sanitizeFlightTime(flight.flightTime);
+        document.getElementById('flightTime').value = flight.flightTime;
         document.getElementById('route').value = flight.route;
         showInlineMessage('Values cloned to edit interface', 'success');
       }
@@ -1666,17 +1262,21 @@
         btn.disabled = true;
         btn.textContent = '...';
         
-        const ok = await apiDeleteFlight(id);
-        if (ok) {
-          showInlineMessage('Log deleted from Google Sheets!', 'success');
-          await loadFromGoogleSheets();
-          refreshAllUI();
-        } else {
-          showInlineMessage('Gagal menghapus dari Google Sheets!', 'error');
-          btn.disabled = false;
-          btn.textContent = 'Delete';
-          btn.dataset.confirm = 'false';
+        const flight = allFlightData.find(f => f.__backendId === id);
+        if (flight) {
+          if (window.dataSdk) {
+            const result = await window.dataSdk.delete(flight);
+            if (!result.isOk) {
+              showInlineMessage('Database synchronization error.', 'error');
+            }
+          } else {
+            allFlightData = allFlightData.filter(f => f.__backendId !== id);
+            syncLocalDatabase();
+          }
+          showInlineMessage('Log successfully deleted', 'success');
         }
+        btn.disabled = false;
+        refreshAllUI();
       } else {
         btn.dataset.confirm = 'true';
         btn.textContent = 'Confirm?';
@@ -1720,7 +1320,7 @@
         <div class="bg-white rounded-xl p-3 flex items-center justify-between border shadow-sm hover:border-slate-300 transition">
           <div class="flex-1">
             <div class="font-bold text-slate-800 text-sm">${formatDate(f.dateMission)}</div>
-            <div class="text-xs text-slate-600 font-semibold mt-0.5">${f.route} • <span class="text-blue-600">${sanitizeFlightTime(f.flightTime)} hrs</span></div>
+            <div class="text-xs text-slate-600 font-semibold mt-0.5">${f.route} • <span class="text-blue-600">${f.flightTime} hrs</span></div>
           </div>
           <div class="flex gap-1.5">
             <button onclick="editFlight('${f.__backendId}')" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg" title="Edit">
@@ -1757,8 +1357,7 @@
 
         let totalMinutes = 0;
         periodFlights.forEach(f => {
-          const sanitizedTime = sanitizeFlightTime(f.flightTime);
-          const parts = sanitizedTime.split(':');
+          const parts = f.flightTime.split(':');
           if(parts.length === 2) {
             const [hours, mins] = parts.map(Number);
             totalMinutes += (hours * 60) + mins;
@@ -1785,7 +1384,6 @@
       });
     }
 
-    /* STREAMING_CHUNK: Processing data exports into spreadsheets and PDFs */
     // CSV Flight Exporter
     function exportPilotCSV() {
       const pilotFlights = allFlightData.filter(f => f.pilotName === currentPilot);
@@ -1798,7 +1396,7 @@
       csvContent += "Date Mission,Flight Time (hh:mm),Route,Pilot Name,Pilot Type\r\n";
 
       pilotFlights.forEach(f => {
-        csvContent += `"${f.dateMission}","${sanitizeFlightTime(f.flightTime)}","${f.route}","${f.pilotName}","${f.pilotType}"\r\n`;
+        csvContent += `"${f.dateMission}","${f.flightTime}","${f.route}","${f.pilotName}","${f.pilotType}"\r\n`;
       });
 
       const encodedUri = encodeURI(csvContent);
@@ -1811,6 +1409,7 @@
       showInlineMessage('Report exported as CSV file', 'success');
     }
 
+    <!-- STREAMING_CHUNK: Setting up the logic for exporting summarizing spreadsheets -->
     // Export Active Pilot Summary to Excel/CSV with clean hh:mm format
     function exportSummaryToExcel() {
       const limits = {
@@ -1843,8 +1442,7 @@
 
           let totalMinutes = 0;
           periodFlights.forEach(f => {
-            const sanitizedTime = sanitizeFlightTime(f.flightTime);
-            const parts = sanitizedTime.split(':');
+            const parts = f.flightTime.split(':');
             if(parts.length === 2) {
               const [hours, mins] = parts.map(Number);
               totalMinutes += (hours * 60) + mins;
@@ -1873,7 +1471,7 @@
       showInlineMessage('Summary exported to Excel/CSV', 'success');
     }
 
-    /* STREAMING_CHUNK: Formatting layout and headers in PDF prints */
+    <!-- STREAMING_CHUNK: Writing CSS and print functions for individual pilot reports -->
     // Print A4 Portrait formatted PDF Report with safe alert indicators in standard hh:mm
     function printSummaryPDF() {
       const printWindow = window.open('', '_blank', 'width=850,height=1100');
@@ -1905,8 +1503,7 @@
 
           let totalMinutes = 0;
           periodFlights.forEach(f => {
-            const sanitizedTime = sanitizeFlightTime(f.flightTime);
-            const parts = sanitizedTime.split(':');
+            const parts = f.flightTime.split(':');
             if(parts.length === 2) {
               const [hours, mins] = parts.map(Number);
               totalMinutes += (hours * 60) + mins;
@@ -2051,7 +1648,7 @@
             </div>
             <div class="date-info">
               <strong>Date Issued:</strong> ${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}<br>
-              <strong>Classification:</strong> Controlled Operational Document
+              <strong>Status Document:</strong> Controlled Audit Summary
             </div>
           </div>
           <div class="title">Active Pilot Flight Hours Status & Limits Audit</div>
@@ -2117,8 +1714,7 @@
         });
         let totalMinutes = 0;
         periodFlights.forEach(f => {
-          const sanitizedTime = sanitizeFlightTime(f.flightTime);
-          const parts = sanitizedTime.split(':');
+          const parts = f.flightTime.split(':');
           if(parts.length === 2) {
             const [hours, mins] = parts.map(Number);
             totalMinutes += (hours * 60) + mins;
@@ -2154,7 +1750,7 @@
               <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; color: #64748b;">${idx + 1}</td>
               <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #1e293b;">${formatDate(f.dateMission)}</td>
               <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; color: #334155;">${f.route}</td>
-              <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; font-weight: bold; color: #1e3a8a;">${sanitizeFlightTime(f.flightTime)}</td>
+              <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; font-weight: bold; color: #1e3a8a;">${f.flightTime}</td>
             </tr>
           `;
         });
@@ -2293,13 +1889,13 @@
               <tr>
                 <td style="width: 20%; font-weight:bold; color: #475569; padding: 2px 0;">Pilot Name:</td>
                 <td style="width: 45%; font-weight:bold; color: #0f172a; padding: 2px 0;">${currentPilot}</td>
-                <td style="width: 15%; font-weight:bold; color: #475569; padding: 2px 0;">Class Rating:</td>
+                <td style="width: 15%; font-weight:bold; color: #475569; padding: 2px 0;">License Type:</td>
                 <td style="width: 20%; font-weight:bold; color: #1e3a8a; padding: 2px 0;">${currentPilotType === 'fixed' ? 'Fixed Wing' : 'Rotary Wing'}</td>
               </tr>
               <tr>
                 <td style="font-weight:bold; color: #475569; padding: 2px 0;">No. License:</td>
                 <td style="color: #0f172a; font-weight:bold; padding: 2px 0;">${licenseNumber}</td>
-                <td style="font-weight:bold; color: #475569; padding: 2px 0;">Total Logs:</td>
+                <td style="font-weight:bold; color: #475569; padding: 2px 0;">Total Flight Logs:</td>
                 <td style="color: #0f172a; padding: 2px 0;">${pilotFlights.length} Missions logged</td>
               </tr>
             </table>
@@ -2411,7 +2007,6 @@
       }
     }
 
-    /* STREAMING_CHUNK: Converting Indonesian string representations of dates into computer ISO formats */
     // Month name to numerical representation mapper
     function parseDateStringToISO(dateStr) {
       if (!dateStr) return null;
@@ -2560,7 +2155,6 @@
       document.getElementById('batchPreviewArea').classList.add('hidden');
     }
 
-    /* STREAMING_CHUNK: Processing imported batch flights data sequentially with strict GSheets updates */
     // Master mass batch writer to backend / localStorage
     async function importBatchData() {
       const results = parseBatchLines();
@@ -2574,39 +2168,52 @@
       const btn = document.getElementById('importBatchBtn');
       btn.disabled = true;
       const originalBtnHTML = btn.innerHTML;
-      btn.innerHTML = `
-        <svg class="animate-spin h-4 w-4 mr-1 text-white inline-block" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-        Mengunggah ${validItems.length} Data ke Google Sheets...
-      `;
 
-      // Build upload payload objects
-      const newPayloads = validItems.map(item => ({
-        __backendId: 'local_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
-        type: 'flight',
-        pilotName: currentPilot,
-        pilotType: currentPilotType,
-        dateMission: item.dateMission,
-        flightTime: item.flightTime,
-        route: item.route,
-        createdAt: new Date().toISOString()
-      }));
+      let processedCount = 0;
+      
+      // Sequential async storage write loops
+      for (const item of validItems) {
+        processedCount++;
+        btn.innerHTML = `
+          <svg class="animate-spin h-4 w-4 mr-1 text-white inline-block" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+          Memproses ${processedCount}/${validItems.length}...
+        `;
 
-      // Transmit batch to Google Sheets directly (No raw local write before success confirmation)
-      const ok = await apiSaveFlightsBatch(newPayloads);
-      if (ok) {
-        showInlineMessage(`Berhasil menyisipkan ${validItems.length} data ke Google Sheets!`, 'success');
-        clearBatchInput();
-        switchEntryTab('single');
-      } else {
-        showInlineMessage(`Gagal menyisipkan data ke Google Sheets. Periksa koneksi Anda!`, 'error');
+        const newPayload = {
+          __backendId: 'local_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+          type: 'flight',
+          pilotName: currentPilot,
+          pilotType: currentPilotType,
+          dateMission: item.dateMission,
+          flightTime: item.flightTime,
+          route: item.route,
+          createdAt: new Date().toISOString()
+        };
+
+        if (window.dataSdk) {
+          try {
+            await window.dataSdk.create(newPayload);
+          } catch(e) {
+            console.warn('Backend Sdk unavailable during batch loop. Fallback writing.', e);
+            allFlightData.push(newPayload);
+          }
+        } else {
+          allFlightData.push(newPayload);
+        }
       }
 
-      // STRICT re-fetch to ensure the UI completely reflects the Cloud Sheets
-      await loadFromGoogleSheets();
-      refreshAllUI();
+      // Offline DB write sync
+      if (!window.dataSdk) {
+        syncLocalDatabase();
+      }
 
-      btn.disabled = false;url
+      btn.disabled = false;
       btn.innerHTML = originalBtnHTML;
+
+      showInlineMessage(`Berhasil menyisipkan ${validItems.length} data ke log!`, 'success');
+      clearBatchInput();
+      switchEntryTab('single');
+      refreshAllUI();
     }
 
     function showInlineMessage(message, type) {
