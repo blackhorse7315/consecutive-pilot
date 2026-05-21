@@ -3,7 +3,10 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1e293b">
   <title>Transwisata Pilot Consecutive Days Calculation</title>
+  <link rel="icon" href="https://lh3.googleusercontent.com/d/1mYhdJNvv6KuIcK_LeUuGlejjRmC1Rgo4">
+  <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/1mYhdJNvv6KuIcK_LeUuGlejjRmC1Rgo4">
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="/_sdk/element_sdk.js"></script>
   <script src="/_sdk/data_sdk.js"></script>
@@ -127,11 +130,9 @@
    <div id="loginPage" class="flex-1 flex items-center justify-center p-4">
     <div class="glossy-card rounded-3xl p-8 w-full max-w-md transition-all duration-300 transform scale-100 hover:scale-[1.01]">
      <div class="text-center mb-8">
-      <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-600 to-indigo-800 flex items-center justify-center shadow-lg relative overflow-hidden group">
+      <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-lg relative overflow-hidden group p-1.5">
        <div class="absolute inset-0 bg-white/10 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-       <svg class="w-10 h-10 text-white transform group-hover:rotate-12 transition-transform" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
-       </svg>
+       <img src="https://lh3.googleusercontent.com/d/1mYhdJNvv6KuIcK_LeUuGlejjRmC1Rgo4" alt="Logo" class="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500" />
       </div>
       <h1 id="appTitle" class="title-font text-2xl font-bold text-slate-800 mb-2">Transwisata Pilot Consecutive Days</h1>
       <p class="text-slate-500 text-xs tracking-wider uppercase font-medium">Flight Time Management System</p>
@@ -1894,8 +1895,46 @@
     setTimeout(() => msg.remove(), 3500);
    }
 
+   // Setup PWA - Membuat aplikasi dapat diinstal di HP/PC
+   function setupPWA() {
+    const iconUrl = 'https://lh3.googleusercontent.com/d/1mYhdJNvv6KuIcK_LeUuGlejjRmC1Rgo4';
+    
+    // Inject Manifest JSON Dinamis
+    const manifest = {
+     name: "Transwisata Pilot Consecutive Days",
+     short_name: "TWA Pilot",
+     start_url: ".",
+     display: "standalone",
+     background_color: "#0f172a",
+     theme_color: "#1e293b",
+     icons: [
+      { src: iconUrl, sizes: "192x192", type: "image/png" },
+      { src: iconUrl, sizes: "512x512", type: "image/png" }
+     ]
+    };
+    const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+    const manifestUrl = URL.createObjectURL(manifestBlob);
+    document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${manifestUrl}">`);
+
+    // Inject Service Worker Dinamis
+    const swCode = `
+     self.addEventListener('install', (e) => { self.skipWaiting(); });
+     self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
+     self.addEventListener('fetch', (e) => { /* Bypass fetch for basic PWA installability */ });
+    `;
+    const swBlob = new Blob([swCode], {type: 'text/javascript'});
+    const swUrl = URL.createObjectURL(swBlob);
+    
+    if ('serviceWorker' in navigator) {
+     navigator.serviceWorker.register(swUrl)
+      .then(() => console.log('PWA Ready: Service Worker Active'))
+      .catch(err => console.log('PWA Service Worker Error:', err));
+    }
+   }
+
    window.onload = function() {
     initApp();
+    setupPWA();
    };
   </script>
  </body>
