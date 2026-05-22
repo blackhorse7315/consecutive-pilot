@@ -1020,8 +1020,8 @@
     showPage('pilotListPage');
    }
 
-   /* STREAMING_CHUNK: Integrating REST API fetch methods for flight saving/deletion logs */
-   async function saveFlightData() {
+   /* STREAMING_CHUNK: Integrating REST API fetch methods for flight saving/deletion logs with Optimistic UI */
+   function saveFlightData() {
     const dateMission = document.getElementById('dateMission').value;
     const flightTime = document.getElementById('flightTime').value.trim();
     const route = document.getElementById('route').value.trim();
@@ -1036,10 +1036,6 @@
      return;
     }
 
-    const btn = document.getElementById('saveBtn');
-    btn.disabled = true;
-    btn.textContent = 'Saving flight...';
-
     const payload = {
       command: editingFlightId ? 'update' : 'insert',
       id: editingFlightId || 'id_' + Date.now(),
@@ -1052,27 +1048,43 @@
       createdAt: new Date().toISOString()
     };
 
-    try {
-      await fetch(WEB_APP_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      });
-      
-      await fetchData(); 
-      showInlineMessage('Data berhasil disimpan ke Cloud!', 'success');
-      
-      document.getElementById('dateMission').value = '';
-      document.getElementById('flightTime').value = '';
-      document.getElementById('route').value = '';
-      editingFlightId = null;
-      document.getElementById('cancelBtn').classList.add('hidden');
-      document.getElementById('saveBtn').textContent = 'Save Record';
-    } catch(e) {
-      showInlineMessage('Error saving flight log', 'error');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Save Record';
+    // Optimistic UI Update: Langsung perbarui data lokal agar antarmuka instan berubah
+    if (editingFlightId) {
+     const index = allFlightData.findIndex(f => f.id === editingFlightId || f.__backendId === editingFlightId || f[0] === editingFlightId);
+     if(index !== -1) {
+      if(Array.isArray(allFlightData[index])) {
+       allFlightData[index][4] = dateMission;
+       allFlightData[index][5] = flightTime;
+       allFlightData[index][6] = route;
+      } else {
+       allFlightData[index].dateMission = dateMission;
+       allFlightData[index].flightTime = flightTime;
+       allFlightData[index].route = route;
+      }
+     }
+    } else {
+     allFlightData.push(payload);
     }
+
+    // Reset Form Segera
+    document.getElementById('dateMission').value = '';
+    document.getElementById('flightTime').value = '';
+    document.getElementById('route').value = '';
+    editingFlightId = null;
+    document.getElementById('cancelBtn').classList.add('hidden');
+    document.getElementById('saveBtn').textContent = 'Save Record';
+    
+    refreshAllUI();
+    showInlineMessage('Menyimpan ke Cloud...', 'info');
+
+    // Pengiriman ke server berjalan di Background (Tanpa memblokir UI)
+    fetch(WEB_APP_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    })
+    .then(() => fetchData())
+    .then(() => showInlineMessage('Data tersimpan sinkron di Cloud!', 'success'))
+    .catch((e) => showInlineMessage('Gagal menyinkronkan dengan server.', 'error'));
    }
 
    function cancelEdit() {
@@ -1133,27 +1145,33 @@
     }
    }
 
-   async function deleteFlight(id) {
+   function deleteFlight(id) {
     const btn = document.querySelector(`[data-delete-id="${id}"]`);
     if (btn.dataset.confirm === 'true') {
-     btn.disabled = true;
-     btn.textContent = '...';
+     
+     // Optimistic UI Update: Langsung hapus dari tampilan lokal
+     allFlightData = allFlightData.filter(f => f.id !== id && f.__backendId !== id && f[0] !== id);
+     refreshAllUI();
+     showInlineMessage('Menghapus log dari server...', 'info');
      
      const payload = { command: 'delete', id: id };
-     await fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) });
-     await fetchData();
-     refreshAllUI();
      
-     showInlineMessage('Log successfully deleted', 'success');
-     btn.disabled = false;
+     // Proses hapus di background server
+     fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) })
+       .then(() => fetchData())
+       .then(() => showInlineMessage('Log sukses dihapus secara permanen!', 'success'))
+       .catch(() => showInlineMessage('Gagal menghapus dari server.', 'error'));
+       
     } else {
      btn.dataset.confirm = 'true';
      btn.textContent = 'Confirm?';
-     btn.className = "p-2 text-rose-500 hover:bg-rose-50 rounded-lg text-xs font-bold ring-1 ring-rose-200 bg-rose-50/50";
+     btn.className = "p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg text-xs font-bold ring-1 ring-rose-200 bg-rose-50/50";
      setTimeout(() => {
-      btn.dataset.confirm = 'false';
-      btn.textContent = 'Delete';
-      btn.className = "p-2 text-red-600 hover:bg-red-50 rounded-lg text-xs font-medium";
+      if(btn) {
+       btn.dataset.confirm = 'false';
+       btn.textContent = 'Delete';
+       btn.className = "p-1.5 text-red-600 hover:bg-red-50 rounded-lg text-xs font-semibold";
+      }
      }, 3000);
     }
    }
@@ -1356,7 +1374,12 @@
 
    /* STREAMING_CHUNK: Processing formatting outputs for formatted PDF layouts */
    function printSummaryPDF() {
-    const printWindow = window.open('', '_blank', 'width=850,height=1100');
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+     showInlineMessage("Pop-up diblokir browser. Harap izinkan Pop-up untuk membuka PDF.", "error");
+     return;
+    }
+
     const limits = {
      7: { fixed: 35, rotary: 40 },
      30: 100,
@@ -1478,7 +1501,7 @@
        </thead>
        <tbody>${rowsHtml}</tbody>
       </table>
-      <script>window.onload = function() { window.print(); setTimeout(function() { window.close(); }, 500); };<\/script>
+      <script>setTimeout(function() { window.focus(); window.print(); }, 1000);<\/script>
      </body>
      </html>
     `;
@@ -1489,7 +1512,11 @@
    }
 
    function printPilotReportPDF() {
-    const printWindow = window.open('', '_blank', 'width=850,height=1100');
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+     showInlineMessage("Pop-up diblokir browser. Harap izinkan Pop-up untuk membuka PDF.", "error");
+     return;
+    }
     
     const pilotFlights = allFlightData
       .filter(f => f.pilotName === currentPilot || f[2] === currentPilot)
@@ -1635,7 +1662,7 @@
        <thead><tr><th style="width: 10%; text-align: center;">No</th><th style="width: 25%;">Date Mission</th><th style="width: 45%;">Flight Route / Mission</th><th style="width: 20%; text-align: center;">Flight Time (hh:mm)</th></tr></thead>
        <tbody>${flightHistoryRowsHtml}</tbody>
       </table>
-      <script>window.onload = function() { window.print(); setTimeout(function() { window.close(); }, 500); };<\/script>
+      <script>setTimeout(function() { window.focus(); window.print(); }, 1000);<\/script>
      </body>
      </html>
     `;
@@ -1849,22 +1876,11 @@
      return;
     }
 
-    const btn = document.getElementById('importBatchBtn');
-    btn.disabled = true;
-    const originalBtnHTML = btn.innerHTML;
-
-    let processedCount = 0;
-    
-    for (const item of validItems) {
-     processedCount++;
-     btn.innerHTML = `
-      <svg class="animate-spin h-4 w-4 mr-1 text-white inline-block" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-      Memproses ${processedCount}/${validItems.length}...
-     `;
-
+    const payloads = [];
+    validItems.forEach((item, index) => {
      const payload = {
       command: 'insert',
-      id: 'local_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+      id: 'id_' + Date.now() + '_' + index,
       type: 'flight',
       pilotName: currentPilot,
       pilotType: currentPilotType,
@@ -1873,7 +1889,18 @@
       route: item.route,
       createdAt: new Date().toISOString()
      };
+     payloads.push(payload);
+     allFlightData.push(payload); // Optimistic UI: Tambahkan langsung
+    });
 
+    // Perbarui UI secara langsung
+    refreshAllUI();
+    clearBatchInput();
+    switchEntryTab('single');
+    showInlineMessage(`Memproses ${validItems.length} data ke Cloud...`, 'info');
+
+    // Proses pengiriman antrean ke background
+    for (const payload of payloads) {
      try {
        await fetch(WEB_APP_URL, {
          method: 'POST',
@@ -1884,30 +1911,28 @@
      }
     }
 
-    btn.disabled = false;
-    btn.innerHTML = originalBtnHTML;
-
-    showInlineMessage(`Berhasil menyisipkan ${validItems.length} data ke log!`, 'success');
-    clearBatchInput();
-    switchEntryTab('single');
     await fetchData(); 
+    showInlineMessage('Seluruh batch data berhasil tersimpan!', 'success');
    }
 
    async function manualSync() {
     const btn = document.getElementById('syncBtn');
     const icon = document.getElementById('syncIcon');
     
+    // Cegah double klik
+    if(btn.disabled) return;
+    
     btn.disabled = true;
-    icon.classList.add('animate-spin'); 
-    showInlineMessage('Menyinkronkan data dari server...', 'info');
+    icon.classList.add('animate-spin', 'text-blue-600'); 
+    showInlineMessage('Menyinkronkan data terbaru...', 'info');
 
     try {
         await fetchData(); 
-        showInlineMessage('Data berhasil diperbarui!', 'success');
+        showInlineMessage('Data sudah yang paling terkini!', 'success');
     } catch (error) {
         showInlineMessage('Gagal sinkronisasi data.', 'error');
     } finally {
-        icon.classList.remove('animate-spin');
+        icon.classList.remove('animate-spin', 'text-blue-600');
         btn.disabled = false;
     }
    }
