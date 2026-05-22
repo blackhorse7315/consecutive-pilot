@@ -354,18 +354,18 @@
         <!-- Single Entry Layout Panel -->
         <div id="singleEntryForm" class="space-y-4">
           <div class="grid sm:grid-cols-3 gap-4">
-           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Date Mission</label> 
-            <input type="date" id="dateMission" class="glossy-input w-full px-3 py-2 rounded-xl text-sm focus:outline-none">
-           </div>
-           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Flight Time (hh:mm)</label> 
-            <input type="text" id="flightTime" class="glossy-input w-full px-3 py-2 rounded-xl text-sm focus:outline-none" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}">
-           </div>
-           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Route</label> 
-            <input type="text" id="route" class="glossy-input w-full px-3 py-2 rounded-xl text-sm focus:outline-none" placeholder="e.g., CGK-DPS">
-           </div>
+            <div>
+             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Date Mission</label> 
+             <input type="date" id="dateMission" class="glossy-input w-full px-3 py-2 rounded-xl text-sm focus:outline-none">
+            </div>
+            <div>
+             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Flight Time (hh:mm)</label> 
+             <input type="text" id="flightTime" class="glossy-input w-full px-3 py-2 rounded-xl text-sm focus:outline-none" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}">
+            </div>
+            <div>
+             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Route</label> 
+             <input type="text" id="route" class="glossy-input w-full px-3 py-2 rounded-xl text-sm focus:outline-none" placeholder="e.g., CGK-DPS">
+            </div>
           </div>
           <div class="flex gap-3 pt-2">
             <button onclick="saveFlightData()" id="saveBtn" class="glossy-btn px-6 py-2.5 rounded-xl text-white font-semibold flex-1">Save Record</button> 
@@ -553,8 +553,8 @@
     { username: 'flightsupport@pt-twa.co.id', password: 'flopstwa021', role: 'user' }
    ];
 
-   /* STREAMING_CHUNK: Integrating the main Google Sheets Fetch logic */
-   const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxs0kfCHVm3Z1eoyIwCcGI0uj9v7crwPdGou_gMSatMP-4nPgD0whGNqpMl6unWyzbA/exec';
+   // PENTING: Ganti teks di bawah ini dengan Web App URL yang baru Anda salin dari proses Deploy!
+   const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbywPBvXqPSumJLR8fqlwmJHQwr31Q6ySgXzH8514Y8NRIWbUNsW3TaYSrmmlhDwSRQ-/exec';
 
    // Fungsi Fetch untuk mengambil data
    async function fetchData() {
@@ -599,7 +599,6 @@
     renderMenuSummaryTable();
    }
 
-   /* STREAMING_CHUNK: Setup logic and helper functions for generic UI state */
    function handleLogin() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
@@ -685,7 +684,6 @@
     }
    }
 
-   /* STREAMING_CHUNK: Providing Admin modification logic for pilot entries */
    function editPilot(type, name) {
     const list = type === 'fixed' ? fixedWingPilots : rotaryWingPilots;
     const pilot = list.find(p => p.name === name);
@@ -804,7 +802,6 @@
     showInlineMessage('Credential user removed', 'success');
    }
 
-   /* STREAMING_CHUNK: Computing consecutive days rendering table in User menu */
    function renderMenuSummaryTable() {
     const container = document.getElementById('menuSummaryTableContainer');
     if (!container) return;
@@ -928,14 +925,13 @@
     });
 
     html += `
-       </tbody>
-     </table>
+        </tbody>
+       </table>
     `;
 
     container.innerHTML = html;
    }
 
-   /* STREAMING_CHUNK: Filtering mechanism logic for Pilot selection views */
    function filterPilotsInList() {
     const q = document.getElementById('pilotSearchInput').value.toLowerCase();
     const cards = document.querySelectorAll('.pilot-list-card-item');
@@ -1020,7 +1016,6 @@
     showPage('pilotListPage');
    }
 
-   /* STREAMING_CHUNK: Integrating REST API fetch methods for flight saving/deletion logs with Optimistic UI */
    function saveFlightData() {
     const dateMission = document.getElementById('dateMission').value;
     const flightTime = document.getElementById('flightTime').value.trim();
@@ -1176,7 +1171,6 @@
     }
    }
 
-   /* STREAMING_CHUNK: Resolving layout formatting algorithms for history rendering */
    function filterByYear() {
     selectedYear = parseInt(document.getElementById('yearFilter').value);
     renderFlightHistory();
@@ -1226,7 +1220,6 @@
     }).join('');
    }
 
-   /* STREAMING_CHUNK: Processing total elapsed limits for visual progress bar tracking */
    function calculateConsecutiveDays() {
     const pilotFlights = allFlightData.filter(f => f.pilotName === currentPilot || f[2] === currentPilot);
     const now = new Date();
@@ -1372,7 +1365,6 @@
     showInlineMessage('Summary exported to Excel/CSV', 'success');
    }
 
-   /* STREAMING_CHUNK: Processing formatting outputs for formatted PDF layouts */
    function printSummaryPDF() {
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
@@ -1464,46 +1456,46 @@
     });
 
     const printHtml = `
-     <!DOCTYPE html>
-     <html>
-     <head>
-      <meta charset="utf-8">
-      <title>TWA Pilot Active Limits Summary Report</title>
-      <style>
-       @page { size: A4 portrait; margin: 15mm 15mm 25mm 15mm; }
-       body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1e293b; margin: 0; padding: 0; line-height: 1.4; }
-       .header { text-align: center; border-bottom: 3px double #1e3a8a; padding-bottom: 12px; margin-bottom: 20px; }
-       .title { text-align: center; font-size: 15px; font-weight: bold; margin-bottom: 20px; color: #0f172a; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; }
-       table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 30px; }
-       th { background-color: #f1f5f9; color: #334155; font-weight: bold; text-align: left; padding: 10px; border-bottom: 2px solid #cbd5e1; font-size: 10px; text-transform: uppercase; }
-       tr:nth-child(even) { background-color: #f8fafc; }
-       .footer { position: fixed; bottom: -12mm; left: 0; right: 0; text-align: center; font-size: 9px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 5px; }
-      </style>
-     </head>
-     <body>
-      <div class="header">
-       <h1 style="font-size: 20px; color: #1e3a8a; margin: 0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">TRANSWISATA PRIMA AVIATION</h1>
-       <p style="font-size: 12px; color: #475569; margin: 4px 0; font-weight: 600;">Flight Operations Support & Air Crew Monitoring System</p>
-       <div style="font-size: 9px; color: #b91c1c; font-weight: bold; text-transform: uppercase; margin: 4px 0;">CONFIDENTIAL - AIRCREW OPERATIONS DIVISION - GENERATED VIA TRANSWISATA PILOT MANAGEMENT SUITE © ${new Date().getFullYear()}</div>
-       <div style="font-size: 8px; color: #64748b; margin-top: 2px;">Date Issued: ${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
-      </div>
-      <div class="title">Active Pilot Flight Hours Status & Limits Audit</div>
-      <table>
-       <thead>
-        <tr>
-         <th style="width: 25%;">Pilot Crew Name</th>
-         <th style="width: 20%;">License & Type</th>
-         <th style="text-align: center; width: 14%;">7 Days</th>
-         <th style="text-align: center; width: 14%;">30 Days</th>
-         <th style="text-align: center; width: 14%;">90 Days</th>
-         <th style="text-align: center; width: 14%;">365 Days</th>
-        </tr>
-       </thead>
-       <tbody>${rowsHtml}</tbody>
-      </table>
-      <script>setTimeout(function() { window.focus(); window.print(); }, 1000);<\/script>
-     </body>
-     </html>
+      <!DOCTYPE html>
+      <html>
+      <head>
+       <meta charset="utf-8">
+       <title>TWA Pilot Active Limits Summary Report</title>
+       <style>
+        @page { size: A4 portrait; margin: 15mm 15mm 25mm 15mm; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1e293b; margin: 0; padding: 0; line-height: 1.4; }
+        .header { text-align: center; border-bottom: 3px double #1e3a8a; padding-bottom: 12px; margin-bottom: 20px; }
+        .title { text-align: center; font-size: 15px; font-weight: bold; margin-bottom: 20px; color: #0f172a; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 30px; }
+        th { background-color: #f1f5f9; color: #334155; font-weight: bold; text-align: left; padding: 10px; border-bottom: 2px solid #cbd5e1; font-size: 10px; text-transform: uppercase; }
+        tr:nth-child(even) { background-color: #f8fafc; }
+        .footer { position: fixed; bottom: -12mm; left: 0; right: 0; text-align: center; font-size: 9px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 5px; }
+       </style>
+      </head>
+      <body>
+       <div class="header">
+        <h1 style="font-size: 20px; color: #1e3a8a; margin: 0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">TRANSWISATA PRIMA AVIATION</h1>
+        <p style="font-size: 12px; color: #475569; margin: 4px 0; font-weight: 600;">Flight Operations Support & Air Crew Monitoring System</p>
+        <div style="font-size: 9px; color: #b91c1c; font-weight: bold; text-transform: uppercase; margin: 4px 0;">CONFIDENTIAL - AIRCREW OPERATIONS DIVISION - GENERATED VIA TRANSWISATA PILOT MANAGEMENT SUITE © ${new Date().getFullYear()}</div>
+        <div style="font-size: 8px; color: #64748b; margin-top: 2px;">Date Issued: ${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
+       </div>
+       <div class="title">Active Pilot Flight Hours Status & Limits Audit</div>
+       <table>
+        <thead>
+         <tr>
+          <th style="width: 25%;">Pilot Crew Name</th>
+          <th style="width: 20%;">License & Type</th>
+          <th style="text-align: center; width: 14%;">7 Days</th>
+          <th style="text-align: center; width: 14%;">30 Days</th>
+          <th style="text-align: center; width: 14%;">90 Days</th>
+          <th style="text-align: center; width: 14%;">365 Days</th>
+         </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+       </table>
+       <script>setTimeout(function() { window.focus(); window.print(); }, 1000);<\/script>
+      </body>
+      </html>
     `;
     
     printWindow.document.open();
@@ -1575,103 +1567,102 @@
     } else {
      pilotFlights.forEach((f, idx) => {
       flightHistoryRowsHtml += `
-       <tr style="page-break-inside: avoid;">
-        <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; color: #64748b;">${idx + 1}</td>
-        <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #1e293b;">${formatDate(f.dateMission || f[4])}</td>
-        <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; color: #334155;">${f.route || f[6]}</td>
-        <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; font-weight: bold; color: #1e3a8a;">${cleanExcelTime(f.flightTime || f[5])}</td>
-       </tr>
+        <tr style="page-break-inside: avoid;">
+         <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; color: #64748b;">${idx + 1}</td>
+         <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #1e293b;">${formatDate(f.dateMission || f[4])}</td>
+         <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; color: #334155;">${f.route || f[6]}</td>
+         <td style="padding: 8px 10px; border-bottom: 1px solid #e2e8f0; text-align: center; font-weight: bold; color: #1e3a8a;">${cleanExcelTime(f.flightTime || f[5])}</td>
+        </tr>
       `;
      });
     }
 
     const printHtml = `
-     <!DOCTYPE html>
-     <html>
-     <head>
-      <meta charset="utf-8">
-      <title>TWA Pilot Flight Logs Audit - ${currentPilot}</title>
-      <style>
-       @page { size: A4 portrait; margin: 15mm 15mm 20mm 15mm; }
-       body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1e293b; margin: 0; padding: 0; line-height: 1.4; }
-       .header { border-bottom: 3px double #1e3a8a; padding-bottom: 12px; margin-bottom: 20px; }
-       .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-       .logo-container h1 { font-size: 20px; color: #1e3a8a; margin: 0 0 4px 0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-       .logo-container p { font-size: 11px; color: #64748b; margin: 0; font-weight: 600; }
-       .header-confidential { text-align: center; font-size: 9px; color: #b91c1c; font-weight: bold; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 12px; background-color: #fef2f2; border: 1px solid #fca5a5; padding: 5px 10px; border-radius: 6px; }
-       .date-info { text-align: right; font-size: 11px; color: #475569; }
-       .title { text-align: center; font-size: 15px; font-weight: bold; margin-bottom: 15px; color: #0f172a; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; }
-       .pilot-profile { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 15px; margin-bottom: 20px; font-size: 12px; }
-       .section-title { font-size: 13px; font-weight: bold; color: #1e3a8a; text-transform: uppercase; margin-bottom: 10px; border-left: 3px solid #1e3a8a; padding-left: 8px; }
-       table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 25px; }
-       th { background-color: #f1f5f9; color: #334155; font-weight: bold; text-align: left; padding: 8px 10px; border-bottom: 2px solid #cbd5e1; font-size: 10px; text-transform: uppercase; }
-       .limits-table td { padding: 8px 10px; border-bottom: 1px solid #e2e8f0; }
-      </style>
-     </head>
-     <body>
-      <div class="header">
-       <div class="header-top">
-        <div class="logo-container">
-         <h1>Transwisata Prima Aviation</h1>
-         <p>Flight Operations Support & Air Crew Monitoring System</p>
+      <!DOCTYPE html>
+      <html>
+      <head>
+       <meta charset="utf-8">
+       <title>TWA Pilot Flight Logs Audit - ${currentPilot}</title>
+       <style>
+        @page { size: A4 portrait; margin: 15mm 15mm 20mm 15mm; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1e293b; margin: 0; padding: 0; line-height: 1.4; }
+        .header { border-bottom: 3px double #1e3a8a; padding-bottom: 12px; margin-bottom: 20px; }
+        .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .logo-container h1 { font-size: 20px; color: #1e3a8a; margin: 0 0 4px 0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .logo-container p { font-size: 11px; color: #64748b; margin: 0; font-weight: 600; }
+        .header-confidential { text-align: center; font-size: 9px; color: #b91c1c; font-weight: bold; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 12px; background-color: #fef2f2; border: 1px solid #fca5a5; padding: 5px 10px; border-radius: 6px; }
+        .date-info { text-align: right; font-size: 11px; color: #475569; }
+        .title { text-align: center; font-size: 15px; font-weight: bold; margin-bottom: 15px; color: #0f172a; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; }
+        .pilot-profile { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 15px; margin-bottom: 20px; font-size: 12px; }
+        .section-title { font-size: 13px; font-weight: bold; color: #1e3a8a; text-transform: uppercase; margin-bottom: 10px; border-left: 3px solid #1e3a8a; padding-left: 8px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 25px; }
+        th { background-color: #f1f5f9; color: #334155; font-weight: bold; text-align: left; padding: 8px 10px; border-bottom: 2px solid #cbd5e1; font-size: 10px; text-transform: uppercase; }
+        .limits-table td { padding: 8px 10px; border-bottom: 1px solid #e2e8f0; }
+       </style>
+      </head>
+      <body>
+       <div class="header">
+        <div class="header-top">
+         <div class="logo-container">
+          <h1>Transwisata Prima Aviation</h1>
+          <p>Flight Operations Support & Air Crew Monitoring System</p>
+         </div>
+         <div class="date-info">
+          <strong>Date Issued:</strong> ${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}<br>
+          <strong>Classification:</strong> Controlled Operational Document
+         </div>
         </div>
-        <div class="date-info">
-         <strong>Date Issued:</strong> ${new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })}<br>
-         <strong>Classification:</strong> Controlled Operational Document
-        </div>
+        <div class="header-confidential">CONFIDENTIAL - Aircrew Operations Division - Generated via Transwisata Pilot Management Suite © 2026</div>
        </div>
-       <div class="header-confidential">CONFIDENTIAL - Aircrew Operations Division - Generated via Transwisata Pilot Management Suite © 2026</div>
-      </div>
-      <div class="title">Pilot Flight Hours & TWA Limits Audit</div>
-      <div class="pilot-profile">
-       <table style="width:100%; margin: 0; font-size:12px;">
-        <tr>
-         <td style="width: 20%; font-weight:bold; color: #475569; padding: 2px 0;">Pilot Name:</td>
-         <td style="width: 45%; font-weight:bold; color: #0f172a; padding: 2px 0;">${currentPilot}</td>
-         <td style="width: 15%; font-weight:bold; color: #475569; padding: 2px 0;">Class Rating:</td>
-         <td style="width: 20%; font-weight:bold; color: #1e3a8a; padding: 2px 0;">${currentPilotType === 'fixed' ? 'Fixed Wing' : 'Rotary Wing'}</td>
-        </tr>
-        <tr>
-         <td style="font-weight:bold; color: #475569; padding: 2px 0;">No. License:</td>
-         <td style="color: #0f172a; font-weight:bold; padding: 2px 0;">${licenseNumber}</td>
-         <td style="font-weight:bold; color: #475569; padding: 2px 0;">Total Logs:</td>
-         <td style="color: #0f172a; padding: 2px 0;">${pilotFlights.length} Missions logged</td>
-        </tr>
+       <div class="title">Pilot Flight Hours & TWA Limits Audit</div>
+       <div class="pilot-profile">
+        <table style="width:100%; margin: 0; font-size:12px;">
+         <tr>
+          <td style="width: 20%; font-weight:bold; color: #475569; padding: 2px 0;">Pilot Name:</td>
+          <td style="width: 45%; font-weight:bold; color: #0f172a; padding: 2px 0;">${currentPilot}</td>
+          <td style="width: 15%; font-weight:bold; color: #475569; padding: 2px 0;">Class Rating:</td>
+          <td style="width: 20%; font-weight:bold; color: #1e3a8a; padding: 2px 0;">${currentPilotType === 'fixed' ? 'Fixed Wing' : 'Rotary Wing'}</td>
+         </tr>
+         <tr>
+          <td style="font-weight:bold; color: #475569; padding: 2px 0;">No. License:</td>
+          <td style="color: #0f172a; font-weight:bold; padding: 2px 0;">${licenseNumber}</td>
+          <td style="font-weight:bold; color: #475569; padding: 2px 0;">Total Logs:</td>
+          <td style="color: #0f172a; padding: 2px 0;">${pilotFlights.length} Missions logged</td>
+         </tr>
+        </table>
+       </div>
+       <div class="section-title">Active Flight Time TWA Limits Analytics</div>
+       <table class="limits-table">
+        <thead>
+         <tr>
+          <th style="width: 25%;">Window Period</th>
+          <th style="text-align: center; width: 25%;">Current Flight Time (hh:mm)</th>
+          <th style="text-align: center; width: 20%;">Max Allowed</th>
+          <th style="text-align: center; width: 15%;">Remaining</th>
+          <th style="text-align: center; width: 15%;">Status</th>
+         </tr>
+        </thead>
+        <tbody>
+         <tr><td style="font-weight: bold; color: #0f172a;">7 Days Window</td><td style="text-align: center; font-weight: bold; color: #1e3a8a;">${formatMinutes(m7)}</td><td>${limits[7]}:00 h</td><td style="text-align: center; font-weight: bold;">${formatMinutes(Math.max(0, (limits[7]*60) - m7))}</td><td style="text-align: center;">${getStatusBadge(m7, limits[7])}</td></tr>
+         <tr><td style="font-weight: bold; color: #0f172a;">30 Days Window</td><td style="text-align: center; font-weight: bold; color: #1e3a8a;">${formatMinutes(m30)}</td><td>${limits[30]}:00 h</td><td style="text-align: center; font-weight: bold;">${formatMinutes(Math.max(0, (limits[30]*60) - m30))}</td><td style="text-align: center;">${getStatusBadge(m30, limits[30])}</td></tr>
+         <tr><td style="font-weight: bold; color: #0f172a;">90 Days Window</td><td style="text-align: center; font-weight: bold; color: #1e3a8a;">${formatMinutes(m90)}</td><td>${limits[90]}:00 h</td><td style="text-align: center; font-weight: bold;">${formatMinutes(Math.max(0, (limits[90]*60) - m90))}</td><td style="text-align: center;">${getStatusBadge(m90, limits[90])}</td></tr>
+         <tr><td style="font-weight: bold; color: #0f172a;">365 Days Window</td><td style="text-align: center; font-weight: bold; color: #1e3a8a;">${formatMinutes(m365)}</td><td>${limits[365]}:00 h</td><td style="text-align: center; font-weight: bold;">${formatMinutes(Math.max(0, (limits[365]*60) - m365))}</td><td style="text-align: center;">${getStatusBadge(m365, limits[365])}</td></tr>
+        </tbody>
        </table>
-      </div>
-      <div class="section-title">Active Flight Time TWA Limits Analytics</div>
-      <table class="limits-table">
-       <thead>
-        <tr>
-         <th style="width: 25%;">Window Period</th>
-         <th style="text-align: center; width: 25%;">Current Flight Time (hh:mm)</th>
-         <th style="text-align: center; width: 20%;">Max Allowed</th>
-         <th style="text-align: center; width: 15%;">Remaining</th>
-         <th style="text-align: center; width: 15%;">Status</th>
-        </tr>
-       </thead>
-       <tbody>
-        <tr><td style="font-weight: bold; color: #0f172a;">7 Days Window</td><td style="text-align: center; font-weight: bold; color: #1e3a8a;">${formatMinutes(m7)}</td><td>${limits[7]}:00 h</td><td style="text-align: center; font-weight: bold;">${formatMinutes(Math.max(0, (limits[7]*60) - m7))}</td><td style="text-align: center;">${getStatusBadge(m7, limits[7])}</td></tr>
-        <tr><td style="font-weight: bold; color: #0f172a;">30 Days Window</td><td style="text-align: center; font-weight: bold; color: #1e3a8a;">${formatMinutes(m30)}</td><td>${limits[30]}:00 h</td><td style="text-align: center; font-weight: bold;">${formatMinutes(Math.max(0, (limits[30]*60) - m30))}</td><td style="text-align: center;">${getStatusBadge(m30, limits[30])}</td></tr>
-        <tr><td style="font-weight: bold; color: #0f172a;">90 Days Window</td><td style="text-align: center; font-weight: bold; color: #1e3a8a;">${formatMinutes(m90)}</td><td>${limits[90]}:00 h</td><td style="text-align: center; font-weight: bold;">${formatMinutes(Math.max(0, (limits[90]*60) - m90))}</td><td style="text-align: center;">${getStatusBadge(m90, limits[90])}</td></tr>
-        <tr><td style="font-weight: bold; color: #0f172a;">365 Days Window</td><td style="text-align: center; font-weight: bold; color: #1e3a8a;">${formatMinutes(m365)}</td><td>${limits[365]}:00 h</td><td style="text-align: center; font-weight: bold;">${formatMinutes(Math.max(0, (limits[365]*60) - m365))}</td><td style="text-align: center;">${getStatusBadge(m365, limits[365])}</td></tr>
-       </tbody>
-      </table>
-      <div class="section-title">Complete Registered Flight Logs</div>
-      <table>
-       <thead><tr><th style="width: 10%; text-align: center;">No</th><th style="width: 25%;">Date Mission</th><th style="width: 45%;">Flight Route / Mission</th><th style="width: 20%; text-align: center;">Flight Time (hh:mm)</th></tr></thead>
-       <tbody>${flightHistoryRowsHtml}</tbody>
-      </table>
-      <script>setTimeout(function() { window.focus(); window.print(); }, 1000);<\/script>
-     </body>
-     </html>
+       <div class="section-title">Complete Registered Flight Logs</div>
+       <table>
+        <thead><tr><th style="width: 10%; text-align: center;">No</th><th style="width: 25%;">Date Mission</th><th style="width: 45%;">Flight Route / Mission</th><th style="width: 20%; text-align: center;">Flight Time (hh:mm)</th></tr></thead>
+        <tbody>${flightHistoryRowsHtml}</tbody>
+       </table>
+       <script>setTimeout(function() { window.focus(); window.print(); }, 1000);<\/script>
+      </body>
+      </html>
     `;
     printWindow.document.open();
     printWindow.document.write(printHtml);
     printWindow.document.close();
    }
 
-   /* STREAMING_CHUNK: Processing data parsing utilities */
    function cleanExcelTime(isoString) {
     if (!isoString || typeof isoString !== 'string') return isoString || '00:00';
     if (isoString.includes('T')) {
@@ -1972,9 +1963,9 @@
 
     // Inject Service Worker Dinamis
     const swCode = `
-     self.addEventListener('install', (e) => { self.skipWaiting(); });
-     self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
-     self.addEventListener('fetch', (e) => { /* Bypass fetch for basic PWA installability */ });
+      self.addEventListener('install', (e) => { self.skipWaiting(); });
+      self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
+      self.addEventListener('fetch', (e) => { /* Bypass fetch for basic PWA installability */ });
     `;
     const swBlob = new Blob([swCode], {type: 'text/javascript'});
     const swUrl = URL.createObjectURL(swBlob);
