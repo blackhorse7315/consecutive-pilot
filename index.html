@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en" class="h-full">
  <head>
@@ -514,7 +513,7 @@
    </footer>
   </div>
 
-  <script>
+   <script>
    const defaultConfig = {
     app_title: 'Ecrew-Transwisata Pilot Consecutive Days Calculation'
    };
@@ -1017,6 +1016,62 @@
     showPage('pilotListPage');
    }
 
+   // --- FUNGSI BARU: Pengecekan 7 Hari Berturut-turut ---
+   function check7ConsecutiveDaysViolation(pilotName, newDatesArray) {
+    // 1. Ambil data penerbangan yang sudah ada untuk pilot ini
+    const existingFlights = allFlightData.filter(f => f.pilotName === pilotName || f[2] === pilotName);
+    
+    // 2. Kumpulkan semua tanggal unik dari data yang sudah ada
+    let allDates = new Set();
+    existingFlights.forEach(f => {
+        const dateStr = f.dateMission || f[4];
+        if (dateStr) {
+            allDates.add(dateStr);
+        }
+    });
+
+    // 3. Tambahkan tanggal-tanggal baru yang akan dimasukkan
+    if (newDatesArray && newDatesArray.length > 0) {
+        newDatesArray.forEach(date => allDates.add(date));
+    }
+
+    // 4. Konversi kembali ke array, ubah menjadi objek Date agar mudah diurutkan, dan buang yang invalid
+    let dateObjects = Array.from(allDates)
+        .map(dateStr => new Date(dateStr))
+        .filter(date => !isNaN(date.getTime()));
+
+    // 5. Urutkan tanggal dari yang terlama ke terbaru
+    dateObjects.sort((a, b) => a - b);
+
+    // 6. Cek streak 7 hari
+    let maxConsecutive = 1;
+    let currentConsecutive = 1;
+
+    for (let i = 1; i < dateObjects.length; i++) {
+        // Hilangkan komponen waktu untuk akurasi perhitungan hari
+        const date1 = new Date(dateObjects[i - 1].getFullYear(), dateObjects[i - 1].getMonth(), dateObjects[i - 1].getDate());
+        const date2 = new Date(dateObjects[i].getFullYear(), dateObjects[i].getMonth(), dateObjects[i].getDate());
+        
+        // Hitung selisih hari
+        const diffTime = Math.abs(date2 - date1);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+        if (diffDays === 1) {
+            // Berurutan
+            currentConsecutive++;
+            if (currentConsecutive >= 7) {
+                return true; // Ditemukan 7 hari berturut-turut!
+            }
+        } else if (diffDays > 1) {
+            // Putus berurutan, reset hitungan
+            currentConsecutive = 1;
+        }
+    }
+
+    return false; // Tidak ada pelanggaran
+   }
+   // -----------------------------------------------------
+
    function saveFlightData() {
     const dateMission = document.getElementById('dateMission').value;
     const flightTime = document.getElementById('flightTime').value.trim();
@@ -1031,6 +1086,19 @@
      showInlineMessage('Use correct hh:mm standard format.', 'error');
      return;
     }
+
+    // --- TAMBAHAN VALIDASI 7 CONSECUTIVE DAYS (SINGLE ENTRY) ---
+    // Cek apakah data ini akan menyebabkan pelanggaran
+    // Jika sedang edit, kita perlu hati-hati agar tidak memicu false positive
+    // dengan dirinya sendiri. Tapi logika sederhananya adalah mensimulasikan masuknya tanggal ini.
+    
+    // Kita kumpulkan tanggal sementara untuk diuji
+    let datesToTest = [dateMission]; 
+    if (check7ConsecutiveDaysViolation(currentPilot, datesToTest)) {
+        showInlineMessage('Pelanggaran Aturan: Pilot telah terbang 6 hari berturut-turut. Hari ke-7 wajib OFF!', 'error');
+        return; // Hentikan proses save
+    }
+    // -----------------------------------------------------------
 
     const payload = {
       command: editingFlightId ? 'update' : 'insert',
@@ -1773,6 +1841,12 @@
     const text = document.getElementById('batchInputText').value;
     const lines = text.split('\n');
     const parsedResults = [];
+    
+    // --- VARIABEL UNTUK SIMULASI 7 CONSECUTIVE DAYS (BATCH) ---
+    // Menyimpan tanggal valid yang diproses dalam batch ini
+    // agar pengecekan hari berikutnya mempertimbangkan baris sebelumnya
+    let temporaryValidDates = []; 
+    // ----------------------------------------------------------
 
     lines.forEach((line, index) => {
      const trimmed = line.trim();
@@ -1793,6 +1867,22 @@
       const isoDate = parseDateStringToISO(datePart);
       if (isoDate) {
        dateMission = isoDate;
+       
+       // --- VALIDASI 7 CONSECUTIVE DAYS TIAP BARIS ---
+       if (isValid) { // Hanya cek jika belum ada error sebelumnya
+           // Buat array simulasi: tanggal yang baru + tanggal yang sudah dianggap valid di baris atasnya
+           let testDates = [...temporaryValidDates, dateMission];
+           
+           if (check7ConsecutiveDaysViolation(currentPilot, testDates)) {
+               isValid = false;
+               errorMessage = 'Pelanggaran 7 hari berturut-turut (Wajib OFF)';
+           } else {
+               // Jika aman, tambahkan ke temporary agar baris berikutnya tahu
+               temporaryValidDates.push(dateMission); 
+           }
+       }
+       // ----------------------------------------------
+       
       } else {
        isValid = false;
        errorMessage = 'Format Tanggal salah';
