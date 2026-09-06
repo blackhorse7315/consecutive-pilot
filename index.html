@@ -147,7 +147,7 @@
        <input type="password" id="password" class="glossy-input w-full px-4 py-3 rounded-xl focus:outline-none" placeholder="Enter password">
       </div>
       <div id="loginError" class="hidden text-red-500 text-sm text-center bg-red-50 py-2 rounded-lg border border-red-200"></div>
-      <button onclick="handleLogin()" class="glossy-btn w-full py-3.5 rounded-xl text-white font-semibold"> Sign In </button>
+      <button id="loginBtn" onclick="handleLogin()" class="glossy-btn w-full py-3.5 rounded-xl text-white font-semibold flex justify-center items-center"> Sign In </button>
      </div>
     </div>
    </div>
@@ -159,7 +159,7 @@
        <span class="w-3 h-3 rounded-full bg-blue-600 animate-pulse"></span>
        <h1 class="title-font text-xl font-bold text-slate-800">Admin Dashboard</h1>
      </div>
-     <button onclick="logout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold w-full md:w-auto">Logout</button>
+     <button onclick="promptLogout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold w-full md:w-auto">Logout</button>
     </header>
     <div class="flex-1 overflow-auto p-4 space-y-4 max-w-6xl mx-auto w-full">
      
@@ -222,7 +222,7 @@
        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
        <h1 class="title-font text-xl font-bold text-slate-800">Pilot Category Directory</h1>
      </div>
-     <button onclick="logout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold w-full md:w-auto">Logout</button>
+     <button onclick="promptLogout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold w-full md:w-auto">Logout</button>
     </header>
     <div class="flex-1 overflow-auto p-4 space-y-6 max-w-6xl mx-auto w-full">
      
@@ -290,7 +290,7 @@
        </button>
        <h1 id="pilotListTitle" class="title-font text-xl font-bold text-slate-800">Select Pilot</h1>
      </div>
-     <button onclick="logout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold w-full md:w-auto">Logout</button>
+     <button onclick="promptLogout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold w-full md:w-auto">Logout</button>
     </header>
     <div class="flex-1 overflow-auto p-4 max-w-5xl mx-auto w-full">
      <!-- Search bar inside listing -->
@@ -329,7 +329,7 @@
          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
          PDF
        </button>
-       <button onclick="logout()" class="glossy-btn-danger px-4 py-2 rounded-xl text-white text-xs font-semibold shrink-0">Logout</button>
+       <button onclick="promptLogout()" class="glossy-btn-danger px-4 py-2 rounded-xl text-white text-xs font-semibold shrink-0">Logout</button>
      </div>
     </header>
     <div class="flex-1 overflow-auto p-4 space-y-6 max-w-5xl mx-auto w-full">
@@ -513,7 +513,22 @@
    </footer>
   </div>
 
-   <script>
+  <!-- Logout Confirmation Modal -->
+  <div id="logoutConfirmModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 transition-opacity">
+   <div class="glossy-card rounded-2xl p-6 max-w-xs w-full text-center shadow-2xl transform transition-all scale-100">
+    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-50 flex items-center justify-center border border-red-100">
+     <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+    </div>
+    <h3 class="title-font text-lg font-bold text-slate-800 mb-2">Konfirmasi Log Out</h3>
+    <p class="text-sm text-slate-500 mb-6 font-medium">Apakah Anda yakin ingin keluar dari sesi aplikasi ini?</p>
+    <div class="flex gap-3">
+     <button onclick="hideLogoutModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 font-bold py-2.5 rounded-xl text-sm transition">Batal</button>
+     <button onclick="executeLogout()" class="flex-1 glossy-btn-danger text-white font-bold py-2.5 rounded-xl text-sm transition">Ya, Keluar</button>
+    </div>
+   </div>
+  </div>
+
+  <script>
    const defaultConfig = {
     app_title: 'Ecrew-Transwisata Pilot Consecutive Days Calculation'
    };
@@ -524,6 +539,8 @@
    let editingFlightId = null;
    let selectedYear = new Date().getFullYear();
    let allFlightData = [];
+   
+   let currentPageId = 'loginPage'; // State Tracker for Router
 
    let editingPilotOriginalName = null;
    let editingPilotOriginalType = null;
@@ -556,7 +573,7 @@
    // PENTING: Ganti teks di bawah ini dengan Web App URL yang baru Anda salin dari proses Deploy!
    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbywPBvXqPSumJLR8fqlwmJHQwr31Q6ySgXzH8514Y8NRIWbUNsW3TaYSrmmlhDwSRQ-/exec';
 
-   // Fungsi Fetch untuk mengambil data
+   // --- STREAMING_CHUNK:Defining network sync functions... ---
    async function fetchData() {
     try {
         const response = await fetch(WEB_APP_URL);
@@ -587,7 +604,8 @@
      });
     }
     
-    await fetchData();
+    // Tarik data di background (tapi user tetap bisa ditahan oleh spinner login)
+    fetchData();
    }
 
    function refreshAllUI() {
@@ -599,16 +617,34 @@
     renderMenuSummaryTable();
    }
 
-   function handleLogin() {
+   // --- STREAMING_CHUNK:Defining Auth logic & Router Engine... ---
+   async function handleLogin() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
     const errorEl = document.getElementById('loginError');
+    const loginBtn = document.getElementById('loginBtn');
 
     const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
     
     if (user) {
-     currentUser = user;
      errorEl.classList.add('hidden');
+     
+     // Munculkan Spinner Loading
+     const originalText = loginBtn.innerHTML;
+     loginBtn.disabled = true;
+     loginBtn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Memuat Data...`;
+
+     // Tunggu sampai fetch selesai agar dashboard tidak kosong
+     try {
+         await fetchData();
+     } catch (e) {
+         console.error(e);
+     }
+     
+     // Pulihkan Tombol
+     loginBtn.disabled = false;
+     loginBtn.innerHTML = originalText;
+     currentUser = user;
      
      if (user.role === 'admin') {
       showPage('adminPage');
@@ -632,13 +668,59 @@
     showPage('loginPage');
    }
 
-   function showPage(pageId) {
+   function promptLogout() {
+    document.getElementById('logoutConfirmModal').classList.remove('hidden');
+   }
+
+   function hideLogoutModal() {
+    document.getElementById('logoutConfirmModal').classList.add('hidden');
+   }
+
+   function executeLogout() {
+    hideLogoutModal();
+    logout();
+   }
+
+   // Router Function
+   function showPage(pageId, pushToHistory = true) {
     ['loginPage', 'adminPage', 'userMenuPage', 'pilotListPage', 'pilotDataPage'].forEach(id => {
      document.getElementById(id).classList.add('hidden');
     });
     document.getElementById(pageId).classList.remove('hidden');
+    
+    currentPageId = pageId;
+    
+    if (pushToHistory) {
+     history.pushState({ page: pageId }, '', `#${pageId}`);
+    }
    }
 
+   // Mobile Hardware Back Button Navigation
+   window.addEventListener('load', () => {
+    history.replaceState({ page: 'loginPage' }, '', '#loginPage');
+   });
+
+   window.addEventListener('popstate', (e) => {
+    const targetPage = e.state ? e.state.page : 'loginPage';
+
+    // Cegah Logout tidak sengaja jika menekan back di dashboard utama
+    if ((currentPageId === 'userMenuPage' || currentPageId === 'adminPage') && targetPage === 'loginPage' && currentUser) {
+     history.pushState({ page: currentPageId }, '', `#${currentPageId}`);
+     promptLogout();
+     return;
+    }
+
+    if (targetPage !== currentPageId) {
+     if (targetPage === 'userMenuPage') renderMenuSummaryTable();
+     if (targetPage === 'pilotListPage') {
+      if(currentPilotType) showPilotList(currentPilotType, false);
+      return; 
+     }
+     showPage(targetPage, false);
+    }
+   });
+
+   // --- STREAMING_CHUNK:Defining Admin Panel functions... ---
    function renderAdminLists() {
     const fixedList = document.getElementById('fixedPilotList');
     const rotaryList = document.getElementById('rotaryPilotList');
@@ -802,6 +884,7 @@
     showInlineMessage('Credential user removed', 'success');
    }
 
+   // --- STREAMING_CHUNK:Defining Dashboard Menu logic... ---
    function renderMenuSummaryTable() {
     const container = document.getElementById('menuSummaryTableContainer');
     if (!container) return;
@@ -945,7 +1028,7 @@
     });
    }
 
-   function showPilotList(type) {
+   function showPilotList(type, pushToHistory = true) {
     currentPilotType = type;
     const title = type === 'fixed' ? 'Fixed Wing Fleet' : 'Rotary Wing Fleet';
     document.getElementById('pilotListTitle').textContent = title;
@@ -970,7 +1053,7 @@
      </div>
     `).join('');
     
-    showPage('pilotListPage');
+    showPage('pilotListPage', pushToHistory);
    }
 
    function selectPilot(name) {
@@ -1008,71 +1091,57 @@
    }
 
    function backToMenu() {
-    showPage('userMenuPage');
-    renderMenuSummaryTable();
+    history.back(); // Memanfaatkan API peramban sehingga tombol Back UI = Tombol Back Ponsel
    }
 
    function backToPilotList() {
-    showPage('pilotListPage');
+    history.back(); // Memanfaatkan API peramban
    }
 
-   // --- FUNGSI BARU: Pengecekan 7 Hari Berturut-turut ---
+   // --- STREAMING_CHUNK:Defining Flight Data Validation (7 Consecutive Days)... ---
    function check7ConsecutiveDaysViolation(pilotName, newDatesArray) {
-    // 1. Ambil data penerbangan yang sudah ada untuk pilot ini
+    // Kumpulkan penerbangan yang sudah ada dari server (lokal cache)
     const existingFlights = allFlightData.filter(f => f.pilotName === pilotName || f[2] === pilotName);
+    const allDatesSet = new Set();
     
-    // 2. Kumpulkan semua tanggal unik dari data yang sudah ada
-    let allDates = new Set();
     existingFlights.forEach(f => {
-        const dateStr = f.dateMission || f[4];
-        if (dateStr) {
-            allDates.add(dateStr);
-        }
+     // Abaikan penerbangan yang sedang diedit (agar tanggal lama tidak bentrok jika hanya ubah rute)
+     if (editingFlightId && (f.id === editingFlightId || f.__backendId === editingFlightId || f[0] === editingFlightId)) return;
+     const d = parseDateStringToISO(f.dateMission || f[4]);
+     if (d) allDatesSet.add(d);
+    });
+    
+    // Tambahkan input array tanggal baru
+    newDatesArray.forEach(d => {
+     const parsed = parseDateStringToISO(d);
+     if (parsed) allDatesSet.add(parsed);
     });
 
-    // 3. Tambahkan tanggal-tanggal baru yang akan dimasukkan
-    if (newDatesArray && newDatesArray.length > 0) {
-        newDatesArray.forEach(date => allDates.add(date));
+    const sortedDates = Array.from(allDatesSet).sort();
+    
+    // Cari urutan 7 hari berturut-turut
+    let consecutiveCount = 1;
+    for (let i = 1; i < sortedDates.length; i++) {
+     const prevDate = new Date(sortedDates[i-1]);
+     const currDate = new Date(sortedDates[i]);
+     
+     // Hitung selisih hari absolut
+     const diffTime = Math.abs(currDate - prevDate);
+     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+     
+     if (diffDays === 1) {
+      consecutiveCount++;
+      if (consecutiveCount >= 7) return true; // Ditemukan pelanggaran!
+     } else if (diffDays > 1) {
+      consecutiveCount = 1; // Putus, reset hitungan
+     }
     }
-
-    // 4. Konversi kembali ke array, ubah menjadi objek Date agar mudah diurutkan, dan buang yang invalid
-    let dateObjects = Array.from(allDates)
-        .map(dateStr => new Date(dateStr))
-        .filter(date => !isNaN(date.getTime()));
-
-    // 5. Urutkan tanggal dari yang terlama ke terbaru
-    dateObjects.sort((a, b) => a - b);
-
-    // 6. Cek streak 7 hari
-    let maxConsecutive = 1;
-    let currentConsecutive = 1;
-
-    for (let i = 1; i < dateObjects.length; i++) {
-        // Hilangkan komponen waktu untuk akurasi perhitungan hari
-        const date1 = new Date(dateObjects[i - 1].getFullYear(), dateObjects[i - 1].getMonth(), dateObjects[i - 1].getDate());
-        const date2 = new Date(dateObjects[i].getFullYear(), dateObjects[i].getMonth(), dateObjects[i].getDate());
-        
-        // Hitung selisih hari
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-
-        if (diffDays === 1) {
-            // Berurutan
-            currentConsecutive++;
-            if (currentConsecutive >= 7) {
-                return true; // Ditemukan 7 hari berturut-turut!
-            }
-        } else if (diffDays > 1) {
-            // Putus berurutan, reset hitungan
-            currentConsecutive = 1;
-        }
-    }
-
-    return false; // Tidak ada pelanggaran
+    
+    return false; // Aman
    }
-   // -----------------------------------------------------
 
-   function saveFlightData() {
+   // --- STREAMING_CHUNK:Defining Input & Batch Processing... ---
+   async function saveFlightData() {
     const dateMission = document.getElementById('dateMission').value;
     const flightTime = document.getElementById('flightTime').value.trim();
     const route = document.getElementById('route').value.trim();
@@ -1087,18 +1156,11 @@
      return;
     }
 
-    // --- TAMBAHAN VALIDASI 7 CONSECUTIVE DAYS (SINGLE ENTRY) ---
-    // Cek apakah data ini akan menyebabkan pelanggaran
-    // Jika sedang edit, kita perlu hati-hati agar tidak memicu false positive
-    // dengan dirinya sendiri. Tapi logika sederhananya adalah mensimulasikan masuknya tanggal ini.
-    
-    // Kita kumpulkan tanggal sementara untuk diuji
-    let datesToTest = [dateMission]; 
-    if (check7ConsecutiveDaysViolation(currentPilot, datesToTest)) {
-        showInlineMessage('Pelanggaran Aturan: Pilot telah terbang 6 hari berturut-turut. Hari ke-7 wajib OFF!', 'error');
-        return; // Hentikan proses save
+    // Blokir jika terbang 7 hari berturut-turut
+    if (check7ConsecutiveDaysViolation(currentPilot, [dateMission])) {
+      showInlineMessage('Pelanggaran Aturan: Pilot telah terbang 6 hari berturut-turut. Hari ke-7 wajib OFF!', 'error');
+      return; 
     }
-    // -----------------------------------------------------------
 
     const payload = {
       command: editingFlightId ? 'update' : 'insert',
@@ -1175,7 +1237,7 @@
    }
 
    function editFlight(id) {
-    const flight = allFlightData.find(f => f.id === id); // Updated to match ID mapping locally or via backend if defined identically
+    const flight = allFlightData.find(f => f.id === id); 
     if (flight) {
      editingFlightId = id;
      document.getElementById('dateMission').value = formatForDateInput(flight.dateMission);
@@ -1185,7 +1247,6 @@
      document.getElementById('saveBtn').textContent = 'Update';
      showInlineMessage('Editing current log row values', 'success');
     } else {
-     // Safety fetch check if mapping fails because of legacy __backendId handling
      const backupFlight = allFlightData.find(f => f.__backendId === id || f[0] === id);
      if(backupFlight) {
       editingFlightId = id;
@@ -1213,14 +1274,14 @@
     const btn = document.querySelector(`[data-delete-id="${id}"]`);
     if (btn.dataset.confirm === 'true') {
      
-     // Optimistic UI Update: Langsung hapus dari tampilan lokal
+     // Optimistic UI Update
      allFlightData = allFlightData.filter(f => f.id !== id && f.__backendId !== id && f[0] !== id);
      refreshAllUI();
      showInlineMessage('Menghapus log dari server...', 'info');
      
      const payload = { command: 'delete', id: id };
      
-     // Proses hapus di background server
+     // Proses hapus di background
      fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) })
        .then(() => fetchData())
        .then(() => showInlineMessage('Log sukses dihapus secara permanen!', 'success'))
@@ -1289,6 +1350,7 @@
     }).join('');
    }
 
+   // --- STREAMING_CHUNK:Defining Statistics Logic... ---
    function calculateConsecutiveDays() {
     const pilotFlights = allFlightData.filter(f => f.pilotName === currentPilot || f[2] === currentPilot);
     const now = new Date();
@@ -1732,6 +1794,7 @@
     printWindow.document.close();
    }
 
+   // --- STREAMING_CHUNK:Defining Utility Formatting & Parser functions... ---
    function cleanExcelTime(isoString) {
     if (!isoString || typeof isoString !== 'string') return isoString || '00:00';
     if (isoString.includes('T')) {
@@ -1837,16 +1900,12 @@
     return null;
    }
 
+   // --- STREAMING_CHUNK:Defining Batch Processing implementation... ---
    function parseBatchLines() {
     const text = document.getElementById('batchInputText').value;
     const lines = text.split('\n');
     const parsedResults = [];
-    
-    // --- VARIABEL UNTUK SIMULASI 7 CONSECUTIVE DAYS (BATCH) ---
-    // Menyimpan tanggal valid yang diproses dalam batch ini
-    // agar pengecekan hari berikutnya mempertimbangkan baris sebelumnya
-    let temporaryValidDates = []; 
-    // ----------------------------------------------------------
+    const newValidDates = []; // Melacak tanggal baru yg sudah lolos antrean untuk uji 7 hari
 
     lines.forEach((line, index) => {
      const trimmed = line.trim();
@@ -1867,22 +1926,6 @@
       const isoDate = parseDateStringToISO(datePart);
       if (isoDate) {
        dateMission = isoDate;
-       
-       // --- VALIDASI 7 CONSECUTIVE DAYS TIAP BARIS ---
-       if (isValid) { // Hanya cek jika belum ada error sebelumnya
-           // Buat array simulasi: tanggal yang baru + tanggal yang sudah dianggap valid di baris atasnya
-           let testDates = [...temporaryValidDates, dateMission];
-           
-           if (check7ConsecutiveDaysViolation(currentPilot, testDates)) {
-               isValid = false;
-               errorMessage = 'Pelanggaran 7 hari berturut-turut (Wajib OFF)';
-           } else {
-               // Jika aman, tambahkan ke temporary agar baris berikutnya tahu
-               temporaryValidDates.push(dateMission); 
-           }
-       }
-       // ----------------------------------------------
-       
       } else {
        isValid = false;
        errorMessage = 'Format Tanggal salah';
@@ -1897,6 +1940,18 @@
        isValid = false;
        errorMessage = errorMessage ? errorMessage + ', Format Jam salah' : 'Format Jam salah';
       }
+      
+      // Integrasi: Cek Hari Ke-7 berturut-turut pada Batch Processing
+      if (isValid) {
+          const datesToCheck = [...newValidDates, dateMission];
+          if (check7ConsecutiveDaysViolation(currentPilot, datesToCheck)) {
+              isValid = false;
+              errorMessage = 'Pelanggaran 7 hari beruntun (Wajib OFF)';
+          } else {
+              newValidDates.push(dateMission); // Masukkan ke daftar aman sementara
+          }
+      }
+
      } else {
       isValid = false;
       errorMessage = 'Pemisah strip (-) tidak lengkap';
@@ -2031,6 +2086,7 @@
     setTimeout(() => msg.remove(), 3500);
    }
 
+   // --- STREAMING_CHUNK:Executing app initialization... ---
    // Setup PWA - Membuat aplikasi dapat diinstal di HP/PC
    function setupPWA() {
     const iconUrl = 'https://lh3.googleusercontent.com/d/1mYhdJNvv6KuIcK_LeUuGlejjRmC1Rgo4';
