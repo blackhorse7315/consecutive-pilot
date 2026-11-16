@@ -336,10 +336,10 @@
      
      <div class="grid lg:grid-cols-12 gap-6 items-start">
        <!-- Main Data Form Container (Left Side in Desktop) -->
-       <div class="glossy-card rounded-2xl p-6 lg:col-span-7 space-y-4">
-        <h2 id="mainDataTitle" class="title-font text-lg font-bold text-slate-800 border-b pb-2 flex items-center gap-2">
-          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          Main Data Entry
+       <div class="glossy-card rounded-2xl p-4 sm:p-6 lg:col-span-7 space-y-4">
+        <h2 id="mainDataTitle" class="title-font text-base sm:text-lg font-bold text-slate-800 border-b pb-2 flex items-center gap-2">
+          <svg class="w-5 h-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <span class="break-words flex-1 leading-tight">Main Data Entry</span>
         </h2>
         
         <!-- Tab Navigation for Data Entry -->
@@ -395,7 +395,7 @@
               <span class="text-xs font-bold text-slate-700">Pratinjau Data Validasi Terdeteksi:</span>
               <span id="batchCountBadge" class="text-[10px] font-black bg-indigo-50 text-indigo-700 border border-indigo-200 px-2.5 py-0.5 rounded-full">0 Baris</span>
             </div>
-            <div class="max-h-48 overflow-y-auto border border-slate-200 rounded-xl bg-white text-xs shadow-inner">
+            <div class="max-h-48 overflow-auto border border-slate-200 rounded-xl bg-white text-xs shadow-inner">
               <table class="w-full text-left border-collapse">
                 <thead class="bg-slate-50 border-b sticky top-0 z-10">
                   <tr>
@@ -423,9 +423,9 @@
        </div>
 
        <!-- Flight History Logs (Right Side in Desktop) -->
-       <div class="glossy-card rounded-2xl p-6 lg:col-span-5 space-y-4">
+       <div class="glossy-card rounded-2xl p-4 sm:p-6 lg:col-span-5 space-y-4">
         <div class="flex items-center justify-between border-b pb-2 gap-4">
-         <h2 class="title-font text-lg font-bold text-slate-800 flex items-center gap-2">
+         <h2 class="title-font text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
            <svg class="w-5 h-5 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
            History Logs
          </h2>
@@ -1067,12 +1067,12 @@
     categoryBadge.textContent = `${currentPilotType === 'fixed' ? 'Fixed Wing' : 'Rotary Wing'} • License: ${licenseNum}`;
     categoryBadge.className = `text-[10px] uppercase font-black tracking-wider px-2.5 py-1 rounded-md border inline-block whitespace-normal leading-relaxed break-words mt-1 ${currentPilotType === 'fixed' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`;
 
-    const dataTitle = currentPilotType === 'fixed' ? 'Main Data Fixed Wing Entry' : 'Main Data Rotary Wing Entry';
+    const dataTitle = currentPilotType === 'fixed' ? 'Fixed Wing Data Entry' : 'Rotary Wing Data Entry';
     document.getElementById('mainDataTitle').innerHTML = `
      <span class="inline-flex p-1.5 rounded-lg ${currentPilotType === 'fixed' ? 'bg-blue-100' : 'bg-emerald-100'} mr-1 shrink-0">
       <svg class="w-4 h-4 ${currentPilotType === 'fixed' ? 'text-blue-600' : 'text-emerald-600'}" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
      </span>
-     ${dataTitle}
+     <span class="break-words flex-1 leading-tight">${dataTitle}</span>
     `;
     
     const limit7 = currentPilotType === 'fixed' ? 35 : 40;
