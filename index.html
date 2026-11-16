@@ -121,13 +121,23 @@
    ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
    }
+
+   /* Hide scrollbar for tabs */
+   .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+   }
+   .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+   }
   </style>
  </head>
+ <!-- Mencegah horizontal scroll dengan overflow-x-hidden pada parent utama -->
  <body class="h-full main-bg">
-  <div id="app" class="h-full flex flex-col overflow-auto">
+  <div id="app" class="h-full flex flex-col w-full overflow-x-hidden overflow-y-auto">
    
    <!-- Login Page -->
-   <div id="loginPage" class="flex-1 flex items-center justify-center p-4">
+   <div id="loginPage" class="flex-1 flex items-center justify-center p-4 w-full">
     <div class="glossy-card rounded-3xl p-8 w-full max-w-md transition-all duration-300 transform scale-100 hover:scale-[1.01]">
      <div class="text-center mb-8">
       <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-lg relative overflow-hidden group p-1.5">
@@ -153,7 +163,7 @@
    </div>
 
    <!-- Admin Page -->
-   <div id="adminPage" class="hidden flex-1 flex flex-col">
+   <div id="adminPage" class="hidden flex-1 flex flex-col w-full">
     <header class="glossy-card m-4 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
      <div class="flex items-center gap-3">
        <span class="w-3 h-3 rounded-full bg-blue-600 animate-pulse"></span>
@@ -161,10 +171,10 @@
      </div>
      <button onclick="promptLogout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold w-full md:w-auto">Logout</button>
     </header>
-    <div class="flex-1 overflow-auto p-4 space-y-4 max-w-6xl mx-auto w-full">
+    <div class="flex-1 p-4 space-y-4 max-w-6xl mx-auto w-full">
      
      <!-- Pilot Management with License Inputs -->
-     <div class="glossy-card rounded-2xl p-6">
+     <div class="glossy-card rounded-2xl p-6 w-full overflow-hidden">
       <h2 class="title-font text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
         <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
         Pilot Management
@@ -179,13 +189,13 @@
        <button onclick="addPilot()" id="addPilotBtn" class="glossy-btn-success px-6 py-2 rounded-xl text-white font-semibold flex-1 md:flex-none">Add Pilot</button>
        <button onclick="cancelEditPilot()" id="cancelPilotEditBtn" class="hidden bg-slate-500 hover:bg-slate-600 px-5 py-2 rounded-xl text-white font-semibold transition flex-1 md:flex-none">Cancel</button>
       </div>
-      <div class="grid md:grid-cols-2 gap-6">
+      <div class="grid md:grid-cols-2 gap-6 w-full">
        <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-200">
         <h3 class="font-bold text-slate-700 mb-3 flex items-center gap-2 text-sm uppercase tracking-wide">
           <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
           Fixed Wing Pilots
         </h3>
-        <div id="fixedPilotList" class="space-y-2 max-h-60 overflow-auto pr-1"></div>
+        <div id="fixedPilotList" class="space-y-2 max-h-60 overflow-y-auto overflow-x-hidden pr-1"></div>
        </div>
        <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-200">
         <h3 class="font-bold text-slate-700 mb-3 flex items-center gap-2 text-sm uppercase tracking-wide">
@@ -194,13 +204,13 @@
           </svg>
           Rotary Wing Pilots
         </h3>
-        <div id="rotaryPilotList" class="space-y-2 max-h-60 overflow-auto pr-1"></div>
+        <div id="rotaryPilotList" class="space-y-2 max-h-60 overflow-y-auto overflow-x-hidden pr-1"></div>
        </div>
       </div>
      </div>
 
      <!-- User Management -->
-     <div class="glossy-card rounded-2xl p-6">
+     <div class="glossy-card rounded-2xl p-6 w-full overflow-hidden">
       <h2 class="title-font text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
         <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         System User Credentials
@@ -210,26 +220,26 @@
        <input type="password" id="newPassword" class="glossy-input flex-1 min-w-[180px] px-4 py-2 rounded-xl" placeholder="Password"> 
        <button onclick="addUser()" class="glossy-btn-success px-6 py-2 rounded-xl text-white font-semibold flex-1 md:flex-none">Add User</button>
       </div>
-      <div id="userList" class="space-y-2 max-h-48 overflow-auto bg-slate-50/50 p-4 rounded-xl border border-slate-200"></div>
+      <div id="userList" class="space-y-2 max-h-48 overflow-y-auto bg-slate-50/50 p-4 rounded-xl border border-slate-200"></div>
      </div>
     </div>
    </div>
 
    <!-- User Page - Menu -->
-   <div id="userMenuPage" class="hidden flex-1 flex flex-col">
+   <div id="userMenuPage" class="hidden flex-1 flex flex-col w-full">
     <header class="glossy-card m-4 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
      <div class="flex items-center gap-2">
-       <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+       <svg class="w-6 h-6 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
        <h1 class="title-font text-xl font-bold text-slate-800">Pilot Category Directory</h1>
      </div>
      <button onclick="promptLogout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold w-full md:w-auto">Logout</button>
     </header>
-    <div class="flex-1 overflow-auto p-4 space-y-6 max-w-6xl mx-auto w-full">
+    <div class="flex-1 p-4 space-y-6 max-w-6xl mx-auto w-full">
      
      <!-- Pilot Type Selection Cards -->
      <div class="flex items-center justify-center">
      <div class="grid md:grid-cols-2 gap-6 w-full max-w-3xl">
-       <div onclick="showPilotList('fixed')" class="pilot-card rounded-2xl p-8 cursor-pointer text-center hover:scale-[1.02]">
+       <div onclick="showPilotList('fixed')" class="pilot-card rounded-2xl p-8 cursor-pointer text-center hover:scale-[1.02] overflow-hidden w-full">
         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-md">
          <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
           <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
@@ -238,7 +248,7 @@
         <h2 class="title-font text-xl font-bold text-slate-800">Fixed Wing Pilot</h2>
         <p class="text-slate-500 text-sm mt-2 font-medium">Airplane Flight Operations</p>
        </div>
-       <div onclick="showPilotList('rotary')" class="pilot-card rounded-2xl p-8 cursor-pointer text-center hover:scale-[1.02]">
+       <div onclick="showPilotList('rotary')" class="pilot-card rounded-2xl p-8 cursor-pointer text-center hover:scale-[1.02] overflow-hidden w-full">
         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md p-3">
           <img src="https://lh3.googleusercontent.com/d/12TBO1ZtVGfa3QzP6HlRFWkYnjHUyCOj_" alt="Logo" class="w-full h-full object-contain" />
         </div>
@@ -249,74 +259,74 @@
      </div>
 
      <!-- Summary Table Card -->
-     <div class="glossy-card rounded-2xl p-6 shadow-lg border border-slate-200/50">
+     <div class="glossy-card rounded-2xl p-4 sm:p-6 shadow-lg border border-slate-200/50 w-full overflow-hidden">
       <div class="flex items-center justify-between mb-4 flex-wrap gap-4 border-b pb-3">
         <h2 class="title-font text-lg font-bold text-slate-800 flex items-center gap-2">
-          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-          Active Pilot Status & Limits Summary
+          <svg class="w-5 h-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Active Limits Summary
         </h2>
-        <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
           <button onclick="exportSummaryToExcel()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all hover:scale-[1.02] flex-1 md:flex-none">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             Excel
           </button>
           <button onclick="printSummaryPDF()" class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all hover:scale-[1.02] flex-1 md:flex-none">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-            Print PDF (A4)
+            PDF (A4)
           </button>
           <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
           <div class="flex items-center justify-center w-full sm:w-auto mt-2 sm:mt-0 gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span class="text-xs text-slate-600 font-bold mr-2">Safe</span>
-            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span><span class="text-xs text-slate-600 font-bold mr-2">>75% Limit</span>
-            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span><span class="text-xs text-slate-600 font-bold">Over Limit</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span><span class="text-[10px] text-slate-600 font-bold mr-1">Safe</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span><span class="text-[10px] text-slate-600 font-bold mr-1">>75%</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0"></span><span class="text-[10px] text-slate-600 font-bold">Over</span>
           </div>
         </div>
       </div>
-      <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
-        <div id="menuSummaryTableContainer"></div>
+      <div class="overflow-x-auto w-full rounded-xl border border-slate-200 shadow-sm">
+        <div id="menuSummaryTableContainer" class="min-w-[600px]"></div>
       </div>
      </div>
     </div>
    </div>
 
    <!-- Pilot List Page -->
-   <div id="pilotListPage" class="hidden flex-1 flex flex-col">
+   <div id="pilotListPage" class="hidden flex-1 flex flex-col w-full">
     <header class="glossy-card m-4 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
      <div class="flex items-center gap-3">
-       <button onclick="backToMenu()" class="p-2 hover:bg-slate-100 rounded-lg transition">
+       <button onclick="backToMenu()" class="p-2 hover:bg-slate-100 rounded-lg transition shrink-0">
          <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
          </svg>
        </button>
-       <h1 id="pilotListTitle" class="title-font text-xl font-bold text-slate-800">Select Pilot</h1>
+       <h1 id="pilotListTitle" class="title-font text-xl font-bold text-slate-800 truncate">Select Pilot</h1>
      </div>
      <button onclick="promptLogout()" class="glossy-btn-danger px-5 py-2 rounded-xl text-white text-sm font-semibold w-full md:w-auto">Logout</button>
     </header>
-    <div class="flex-1 overflow-auto p-4 max-w-5xl mx-auto w-full">
+    <div class="flex-1 p-4 max-w-5xl mx-auto w-full">
      <!-- Search bar inside listing -->
-     <div class="max-w-md mx-auto mb-6">
+     <div class="max-w-md mx-auto mb-6 w-full px-2">
        <div class="relative">
-         <input type="text" id="pilotSearchInput" oninput="filterPilotsInList()" class="glossy-input w-full pl-10 pr-4 py-2.5 rounded-xl focus:outline-none" placeholder="Search pilot by name...">
+         <input type="text" id="pilotSearchInput" oninput="filterPilotsInList()" class="glossy-input w-full pl-10 pr-4 py-2.5 rounded-xl focus:outline-none text-sm" placeholder="Search pilot by name...">
          <svg class="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
        </div>
      </div>
-     <div id="pilotListContainer" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+     <div id="pilotListContainer" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full"></div>
     </div>
    </div>
 
    <!-- Pilot Data Page -->
-   <div id="pilotDataPage" class="hidden flex-1 flex flex-col">
+   <div id="pilotDataPage" class="hidden flex-1 flex flex-col w-full">
     <header class="glossy-card m-4 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-     <div class="flex items-start md:items-center gap-3 w-full md:w-auto">
+     <div class="flex items-start md:items-center gap-3 w-full md:w-auto overflow-hidden">
        <button onclick="backToPilotList()" class="p-2 hover:bg-slate-100 rounded-lg transition shrink-0 mt-0.5 md:mt-0">
          <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
          </svg>
        </button>
        <div class="flex flex-col flex-1 min-w-0">
-         <h1 id="selectedPilotName" class="title-font text-xl md:text-2xl font-bold text-slate-800 leading-tight break-words">Pilot Name</h1>
+         <h1 id="selectedPilotName" class="title-font text-lg md:text-2xl font-bold text-slate-800 leading-tight truncate">Pilot Name</h1>
          <div class="mt-1 md:mt-0.5">
-           <span id="pilotCategoryBadge" class="text-[10px] uppercase font-bold tracking-wider text-slate-500 whitespace-normal break-words leading-relaxed">Category</span>
+           <span id="pilotCategoryBadge" class="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-slate-500 truncate inline-block max-w-full">Category</span>
          </div>
        </div>
      </div>
@@ -332,77 +342,78 @@
        <button onclick="promptLogout()" class="glossy-btn-danger px-4 py-2 rounded-xl text-white text-xs font-semibold shrink-0">Logout</button>
      </div>
     </header>
-    <div class="flex-1 overflow-auto p-4 space-y-6 max-w-5xl mx-auto w-full">
-     
-     <div class="grid lg:grid-cols-12 gap-6 items-start">
+    
+    <div class="flex-1 p-4 space-y-6 max-w-5xl mx-auto w-full">
+     <div class="grid lg:grid-cols-12 gap-4 sm:gap-6 items-start w-full">
+       
        <!-- Main Data Form Container (Left Side in Desktop) -->
-       <div class="glossy-card rounded-2xl p-4 sm:p-6 lg:col-span-7 space-y-4">
+       <!-- Menggunakan min-w-0 agar child tidak push kontainer melampaui grid boundaries -->
+       <div class="glossy-card rounded-2xl p-4 sm:p-6 lg:col-span-7 space-y-4 w-full min-w-0 overflow-hidden">
         <h2 id="mainDataTitle" class="title-font text-base sm:text-lg font-bold text-slate-800 border-b pb-2 flex items-center gap-2">
           <svg class="w-5 h-5 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          <span class="break-words flex-1 leading-tight">Main Data Entry</span>
+          <span class="flex-1 leading-tight truncate">Data Entry</span>
         </h2>
         
         <!-- Tab Navigation for Data Entry -->
-        <div class="flex border-b border-slate-200 gap-2 mb-2 overflow-x-auto">
-          <button onclick="switchEntryTab('single')" id="tabSingle" class="py-2.5 px-4 border-b-2 border-blue-600 text-blue-600 font-bold text-xs uppercase tracking-wider focus:outline-none transition-all shrink-0">Single Entry</button>
-          <button onclick="switchEntryTab('batch')" id="tabBatch" class="py-2.5 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-bold text-xs uppercase tracking-wider focus:outline-none transition-all flex items-center gap-1.5 shrink-0">
-            Parse Otomatis (Batch)
-            <span class="bg-blue-100 text-blue-800 text-[9px] px-2 py-0.5 rounded-full font-black uppercase">Multi</span>
+        <div class="flex border-b border-slate-200 gap-1 sm:gap-2 mb-2 overflow-x-auto scrollbar-hide w-full">
+          <button onclick="switchEntryTab('single')" id="tabSingle" class="py-2.5 px-3 border-b-2 border-blue-600 text-blue-600 font-bold text-[10px] sm:text-xs uppercase tracking-wider focus:outline-none transition-all shrink-0 whitespace-nowrap">Single Entry</button>
+          <button onclick="switchEntryTab('batch')" id="tabBatch" class="py-2.5 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-bold text-[10px] sm:text-xs uppercase tracking-wider focus:outline-none transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap">
+            Batch Parse
+            <span class="bg-blue-100 text-blue-800 text-[9px] px-1.5 py-0.5 rounded-full font-black uppercase">Multi</span>
           </button>
         </div>
 
         <!-- Single Entry Layout Panel -->
-        <div id="singleEntryForm" class="space-y-4">
-          <div class="grid sm:grid-cols-3 gap-4">
-            <div>
+        <div id="singleEntryForm" class="space-y-4 w-full">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+            <div class="w-full">
              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Date Mission</label> 
-             <input type="date" id="dateMission" class="glossy-input w-full px-3 py-2 rounded-xl text-sm focus:outline-none">
+             <input type="date" id="dateMission" class="glossy-input w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none">
             </div>
-            <div>
-             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Flight Time (hh:mm)</label> 
-             <input type="text" id="flightTime" class="glossy-input w-full px-3 py-2 rounded-xl text-sm focus:outline-none" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}">
+            <div class="w-full">
+             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Flight Time</label> 
+             <input type="text" id="flightTime" class="glossy-input w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none" placeholder="00:00" pattern="[0-9]{2}:[0-9]{2}">
             </div>
-            <div>
+            <div class="w-full">
              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Route</label> 
-             <input type="text" id="route" class="glossy-input w-full px-3 py-2 rounded-xl text-sm focus:outline-none" placeholder="e.g., CGK-DPS">
+             <input type="text" id="route" class="glossy-input w-full px-3 py-2.5 rounded-xl text-sm focus:outline-none" placeholder="e.g., CGK-DPS">
             </div>
           </div>
-          <div class="flex gap-3 pt-2">
-            <button onclick="saveFlightData()" id="saveBtn" class="glossy-btn px-6 py-2.5 rounded-xl text-white font-semibold flex-1">Save Record</button> 
-            <button onclick="cancelEdit()" id="cancelBtn" class="hidden glossy-btn-danger px-6 py-2.5 rounded-xl text-white font-semibold flex-1">Cancel Edit</button>
+          <div class="flex flex-col sm:flex-row gap-3 pt-2 w-full">
+            <button onclick="saveFlightData()" id="saveBtn" class="glossy-btn w-full px-6 py-3 rounded-xl text-white font-semibold flex-1">Save Record</button> 
+            <button onclick="cancelEdit()" id="cancelBtn" class="hidden glossy-btn-danger w-full px-6 py-3 rounded-xl text-white font-semibold flex-1">Cancel Edit</button>
           </div>
         </div>
 
         <!-- Batch Paste & Automate Parse Panel -->
-        <div id="batchEntryForm" class="hidden space-y-4">
-          <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-3 text-xs text-blue-950 leading-relaxed space-y-1">
+        <div id="batchEntryForm" class="hidden space-y-4 w-full">
+          <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-3 text-[11px] sm:text-xs text-blue-950 leading-relaxed space-y-1 w-full">
             <div class="font-bold flex items-center gap-1 text-blue-800">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              Format Input Terbaca Otomatis:
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Format Auto-Parse:
             </div>
-            <div>Gunakan pemisah strip <code class="bg-blue-100/80 px-1 py-0.5 rounded font-mono font-bold text-[11px]"> - </code> sebagai pembatas. Satu data per baris.</div>
-            <div class="font-semibold text-slate-600 mt-1">Contoh: <span class="text-blue-700 font-mono">01 Jan 2026 - HLP LOCAL - 05:30</span></div>
-            <div class="text-[11px] text-slate-500 italic">Mendukung copas langsung > 50 data dari teks chat WhatsApp, email, ataupun kolom spreadsheet Excel.</div>
+            <div>Pemisah: <code class="bg-blue-100/80 px-1 py-0.5 rounded font-mono font-bold"> - </code> (1 per baris).</div>
+            <div class="font-semibold text-slate-600 mt-1">Ex: <span class="text-blue-700 font-mono text-[10px] sm:text-[11px]">01 Jan 2026 - HLP LOCAL - 05:30</span></div>
           </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Area Paste Teks Data</label>
-            <textarea id="batchInputText" oninput="livePreviewBatch()" class="glossy-input w-full h-44 px-3.5 py-2.5 rounded-xl text-xs font-mono focus:outline-none resize-none leading-relaxed" placeholder="Contoh input massal:&#10;01 Jan 2026 - HLP LOCAL - 05:30&#10;02 Jan 2026 - CGK-DPS - 01:45&#10;03 Jan 2026 - DPS-HLP - 01:50"></textarea>
+          <div class="w-full">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Paste Data Area</label>
+            <textarea id="batchInputText" oninput="livePreviewBatch()" class="glossy-input w-full h-40 px-3.5 py-2.5 rounded-xl text-[11px] sm:text-xs font-mono focus:outline-none resize-none leading-relaxed" placeholder="01 Jan 2026 - HLP LOCAL - 05:30&#10;02 Jan 2026 - CGK-DPS - 01:45"></textarea>
           </div>
           
           <!-- Live Preview Parser Area -->
-          <div id="batchPreviewArea" class="hidden space-y-2">
+          <div id="batchPreviewArea" class="hidden space-y-2 w-full">
             <div class="flex justify-between items-center px-1">
-              <span class="text-xs font-bold text-slate-700">Pratinjau Data Validasi Terdeteksi:</span>
-              <span id="batchCountBadge" class="text-[10px] font-black bg-indigo-50 text-indigo-700 border border-indigo-200 px-2.5 py-0.5 rounded-full">0 Baris</span>
+              <span class="text-[10px] sm:text-xs font-bold text-slate-700">Preview Data:</span>
+              <span id="batchCountBadge" class="text-[9px] sm:text-[10px] font-black bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-full">0 Baris</span>
             </div>
-            <div class="max-h-48 overflow-auto border border-slate-200 rounded-xl bg-white text-xs shadow-inner">
-              <table class="w-full text-left border-collapse">
+            <div class="max-h-48 overflow-y-auto overflow-x-auto w-full border border-slate-200 rounded-xl bg-white text-[10px] sm:text-xs shadow-inner">
+              <table class="w-full text-left border-collapse min-w-[300px]">
                 <thead class="bg-slate-50 border-b sticky top-0 z-10">
                   <tr>
-                    <th class="p-2.5 font-bold text-slate-600">Tanggal</th>
-                    <th class="p-2.5 font-bold text-slate-600">Rute</th>
-                    <th class="p-2.5 font-bold text-slate-600">Durasi</th>
-                    <th class="p-2.5 text-right font-bold text-slate-600">Status</th>
+                    <th class="p-2 font-bold text-slate-600">Tgl</th>
+                    <th class="p-2 font-bold text-slate-600">Rute</th>
+                    <th class="p-2 font-bold text-slate-600">Dur</th>
+                    <th class="p-2 text-right font-bold text-slate-600">Status</th>
                   </tr>
                 </thead>
                 <tbody id="batchPreviewTableBody" class="divide-y divide-slate-100">
@@ -412,94 +423,93 @@
             </div>
           </div>
           
-          <div class="flex flex-col sm:flex-row gap-3 pt-2">
-            <button onclick="importBatchData()" id="importBatchBtn" class="glossy-btn px-6 py-2.5 rounded-xl text-white font-semibold flex-1 flex items-center justify-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-              Proses Impor Semua Data Valid
+          <div class="flex flex-col sm:flex-row gap-3 pt-2 w-full">
+            <button onclick="importBatchData()" id="importBatchBtn" class="glossy-btn w-full px-4 py-2.5 rounded-xl text-white text-xs sm:text-sm font-semibold flex-1 flex items-center justify-center gap-2">
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              Proses Impor Valid
             </button>
-            <button onclick="clearBatchInput()" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-semibold transition w-full sm:w-auto">Bersihkan</button>
+            <button onclick="clearBatchInput()" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition">Bersihkan</button>
           </div>
         </div>
        </div>
 
        <!-- Flight History Logs (Right Side in Desktop) -->
-       <div class="glossy-card rounded-2xl p-4 sm:p-6 lg:col-span-5 space-y-4">
-        <div class="flex items-center justify-between border-b pb-2 gap-4">
-         <h2 class="title-font text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
+       <div class="glossy-card rounded-2xl p-4 sm:p-6 lg:col-span-5 space-y-4 w-full min-w-0 overflow-hidden">
+        <div class="flex items-center justify-between border-b pb-2 gap-2">
+         <h2 class="title-font text-base sm:text-lg font-bold text-slate-800 flex items-center gap-1.5 truncate">
            <svg class="w-5 h-5 text-indigo-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-           History Logs
+           <span class="truncate">History Logs</span>
          </h2>
-         <div class="flex items-center gap-2">
-          <!-- Tombol Sinkronisasi Manual Google Sheet -->
-          <button id="syncBtn" onclick="manualSync()" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-emerald-600 transition-all duration-300 transform active:scale-95 border" title="Sinkronkan dengan server">
-              <svg id="syncIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+         <div class="flex items-center gap-2 shrink-0">
+          <button id="syncBtn" onclick="manualSync()" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-500 hover:text-emerald-600 transition-all duration-300 transform active:scale-95 border bg-white" title="Sinkronkan dengan server">
+              <svg id="syncIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
               </svg>
           </button>
-          <select id="yearFilter" onchange="filterByYear()" class="glossy-input px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none"></select>
+          <select id="yearFilter" onchange="filterByYear()" class="glossy-input px-2 py-1 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none"></select>
          </div>
         </div>
-        <div id="flightHistory" class="space-y-3 max-h-[300px] overflow-y-auto pr-1"></div>
+        <div id="flightHistory" class="space-y-3 max-h-[300px] overflow-y-auto overflow-x-hidden pr-1 w-full"></div>
        </div>
      </div>
 
      <!-- Consecutive Days Calculation Analytics Block -->
-     <div class="space-y-4">
-       <h3 class="title-font text-lg font-bold text-white flex items-center gap-2">
-         <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+     <div class="space-y-4 w-full">
+       <h3 class="title-font text-base sm:text-lg font-bold text-white flex items-center gap-2">
+         <svg class="w-5 h-5 text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
          Active Flight Time TWA Limits Analytics
        </h3>
-       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
         <!-- 7 Days Limit Card -->
-        <div class="glossy-card rounded-2xl p-5 border-l-4 border-l-blue-500 shadow-md transform hover:translate-y-[-2px] transition-transform">
+        <div class="glossy-card rounded-2xl p-4 sm:p-5 border-l-4 border-l-blue-500 shadow-md transform hover:translate-y-[-2px] transition-transform w-full">
          <div class="flex items-center justify-between mb-3">
-          <h3 class="font-bold text-slate-700 text-sm">7 Days Window</h3>
-          <span id="limit7" class="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-bold">Max: 35h</span>
+          <h3 class="font-bold text-slate-700 text-xs sm:text-sm">7 Days Window</h3>
+          <span id="limit7" class="text-[9px] sm:text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full font-bold">Max: 35h</span>
          </div>
-         <div id="hours7" class="text-3xl font-extrabold text-blue-600 mb-2">0:00</div>
-         <div class="progress-bar h-3.5 mb-2">
+         <div id="hours7" class="text-2xl sm:text-3xl font-extrabold text-blue-600 mb-2">0:00</div>
+         <div class="progress-bar h-3 sm:h-3.5 mb-2">
           <div id="progress7" class="progress-fill h-full" style="width: 0%"></div>
          </div>
-         <div id="remaining7" class="text-xs text-slate-500 font-medium">35:00 remaining</div>
+         <div id="remaining7" class="text-[10px] sm:text-xs text-slate-500 font-medium">35:00 remaining</div>
         </div>
         
         <!-- 30 Days Limit Card -->
-        <div class="glossy-card rounded-2xl p-5 border-l-4 border-l-indigo-500 shadow-md transform hover:translate-y-[-2px] transition-transform">
+        <div class="glossy-card rounded-2xl p-4 sm:p-5 border-l-4 border-l-indigo-500 shadow-md transform hover:translate-y-[-2px] transition-transform w-full">
          <div class="flex items-center justify-between mb-3">
-          <h3 class="font-bold text-slate-700 text-sm">30 Days Window</h3>
-          <span class="text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-full font-bold">Max: 100h</span>
+          <h3 class="font-bold text-slate-700 text-xs sm:text-sm">30 Days Window</h3>
+          <span class="text-[9px] sm:text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-full font-bold">Max: 100h</span>
          </div>
-         <div id="hours30" class="text-3xl font-extrabold text-indigo-600 mb-2">0:00</div>
-         <div class="progress-bar h-3.5 mb-2">
+         <div id="hours30" class="text-2xl sm:text-3xl font-extrabold text-indigo-600 mb-2">0:00</div>
+         <div class="progress-bar h-3 sm:h-3.5 mb-2">
           <div id="progress30" class="progress-fill h-full" style="width: 0%"></div>
          </div>
-         <div id="remaining30" class="text-xs text-slate-500 font-medium">100:00 remaining</div>
+         <div id="remaining30" class="text-[10px] sm:text-xs text-slate-500 font-medium">100:00 remaining</div>
         </div>
 
         <!-- 90 Days Limit Card -->
-        <div class="glossy-card rounded-2xl p-5 border-l-4 border-l-emerald-500 shadow-md transform hover:translate-y-[-2px] transition-transform">
+        <div class="glossy-card rounded-2xl p-4 sm:p-5 border-l-4 border-l-emerald-500 shadow-md transform hover:translate-y-[-2px] transition-transform w-full">
          <div class="flex items-center justify-between mb-3">
-          <h3 class="font-bold text-slate-700 text-sm">90 Days Window</h3>
-          <span class="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">Max: 300h</span>
+          <h3 class="font-bold text-slate-700 text-xs sm:text-sm">90 Days Window</h3>
+          <span class="text-[9px] sm:text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">Max: 300h</span>
          </div>
-         <div id="hours90" class="text-3xl font-extrabold text-emerald-600 mb-2">0:00</div>
-         <div class="progress-bar h-3.5 mb-2">
+         <div id="hours90" class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mb-2">0:00</div>
+         <div class="progress-bar h-3 sm:h-3.5 mb-2">
           <div id="progress90" class="progress-fill h-full" style="width: 0%"></div>
          </div>
-         <div id="remaining90" class="text-xs text-slate-500 font-medium">300:00 remaining</div>
+         <div id="remaining90" class="text-[10px] sm:text-xs text-slate-500 font-medium">300:00 remaining</div>
         </div>
 
         <!-- 365 Days Limit Card -->
-        <div class="glossy-card rounded-2xl p-5 border-l-4 border-l-purple-500 shadow-md transform hover:translate-y-[-2px] transition-transform">
+        <div class="glossy-card rounded-2xl p-4 sm:p-5 border-l-4 border-l-purple-500 shadow-md transform hover:translate-y-[-2px] transition-transform w-full">
          <div class="flex items-center justify-between mb-3">
-          <h3 class="font-bold text-slate-700 text-sm">365 Days Window</h3>
-          <span class="text-[10px] bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-full font-bold">Max: 1050h</span>
+          <h3 class="font-bold text-slate-700 text-xs sm:text-sm">365 Days Window</h3>
+          <span class="text-[9px] sm:text-[10px] bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-full font-bold">Max: 1050h</span>
          </div>
-         <div id="hours365" class="text-3xl font-extrabold text-purple-600 mb-2">0:00</div>
-         <div class="progress-bar h-3.5 mb-2">
+         <div id="hours365" class="text-2xl sm:text-3xl font-extrabold text-purple-600 mb-2">0:00</div>
+         <div class="progress-bar h-3 sm:h-3.5 mb-2">
           <div id="progress365" class="progress-fill h-full" style="width: 0%"></div>
          </div>
-         <div id="remaining365" class="text-xs text-slate-500 font-medium">1050:00 remaining</div>
+         <div id="remaining365" class="text-[10px] sm:text-xs text-slate-500 font-medium">1050:00 remaining</div>
         </div>
        </div>
      </div>
@@ -509,7 +519,7 @@
 
    <!-- Footer -->
    <footer class="glossy-card m-4 mt-0 rounded-2xl p-3 text-center">
-    <p class="text-slate-600 text-xs font-semibold tracking-wide">Copyright 2026 by SkyOps Solution — Transwisata Flight Support</p>
+    <p class="text-slate-600 text-[10px] sm:text-xs font-semibold tracking-wide">Copyright 2026 by SkyOps Solution — Transwisata Flight Support</p>
    </footer>
   </div>
 
@@ -573,7 +583,6 @@
    // PENTING: Ganti teks di bawah ini dengan Web App URL yang baru Anda salin dari proses Deploy!
    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbywPBvXqPSumJLR8fqlwmJHQwr31Q6ySgXzH8514Y8NRIWbUNsW3TaYSrmmlhDwSRQ-/exec';
 
-   // --- STREAMING_CHUNK:Defining network sync functions... ---
    async function fetchData() {
     try {
         const response = await fetch(WEB_APP_URL);
@@ -1065,14 +1074,14 @@
 
     const categoryBadge = document.getElementById('pilotCategoryBadge');
     categoryBadge.textContent = `${currentPilotType === 'fixed' ? 'Fixed Wing' : 'Rotary Wing'} • License: ${licenseNum}`;
-    categoryBadge.className = `text-[10px] uppercase font-black tracking-wider px-2.5 py-1 rounded-md border inline-block whitespace-normal leading-relaxed break-words mt-1 ${currentPilotType === 'fixed' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`;
+    categoryBadge.className = `text-[10px] sm:text-xs uppercase font-black tracking-wider px-2.5 py-1 rounded-md border inline-block whitespace-normal leading-relaxed break-words mt-1 ${currentPilotType === 'fixed' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`;
 
-    const dataTitle = currentPilotType === 'fixed' ? 'Fixed Wing Data Entry' : 'Rotary Wing Data Entry';
+    const dataTitle = currentPilotType === 'fixed' ? 'Data Entry' : 'Data Entry';
     document.getElementById('mainDataTitle').innerHTML = `
      <span class="inline-flex p-1.5 rounded-lg ${currentPilotType === 'fixed' ? 'bg-blue-100' : 'bg-emerald-100'} mr-1 shrink-0">
       <svg class="w-4 h-4 ${currentPilotType === 'fixed' ? 'text-blue-600' : 'text-emerald-600'}" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
      </span>
-     <span class="break-words flex-1 leading-tight">${dataTitle}</span>
+     <span class="flex-1 leading-tight truncate">${currentPilotType === 'fixed' ? 'Fixed Wing' : 'Rotary Wing'} ${dataTitle}</span>
     `;
     
     const limit7 = currentPilotType === 'fixed' ? 35 : 40;
@@ -1091,27 +1100,24 @@
    }
 
    function backToMenu() {
-    history.back(); // Memanfaatkan API peramban sehingga tombol Back UI = Tombol Back Ponsel
+    history.back(); 
    }
 
    function backToPilotList() {
-    history.back(); // Memanfaatkan API peramban
+    history.back(); 
    }
 
    // --- STREAMING_CHUNK:Defining Flight Data Validation (7 Consecutive Days)... ---
    function check7ConsecutiveDaysViolation(pilotName, newDatesArray) {
-    // Kumpulkan penerbangan yang sudah ada dari server (lokal cache)
     const existingFlights = allFlightData.filter(f => f.pilotName === pilotName || f[2] === pilotName);
     const allDatesSet = new Set();
     
     existingFlights.forEach(f => {
-     // Abaikan penerbangan yang sedang diedit (agar tanggal lama tidak bentrok jika hanya ubah rute)
      if (editingFlightId && (f.id === editingFlightId || f.__backendId === editingFlightId || f[0] === editingFlightId)) return;
      const d = parseDateStringToISO(f.dateMission || f[4]);
      if (d) allDatesSet.add(d);
     });
     
-    // Tambahkan input array tanggal baru
     newDatesArray.forEach(d => {
      const parsed = parseDateStringToISO(d);
      if (parsed) allDatesSet.add(parsed);
@@ -1119,13 +1125,11 @@
 
     const sortedDates = Array.from(allDatesSet).sort();
     
-    // Cari urutan 7 hari berturut-turut
     let consecutiveCount = 1;
     for (let i = 1; i < sortedDates.length; i++) {
      const prevDate = new Date(sortedDates[i-1]);
      const currDate = new Date(sortedDates[i]);
      
-     // Hitung selisih hari absolut
      const diffTime = Math.abs(currDate - prevDate);
      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
      
@@ -1133,7 +1137,7 @@
       consecutiveCount++;
       if (consecutiveCount >= 7) return true; // Ditemukan pelanggaran!
      } else if (diffDays > 1) {
-      consecutiveCount = 1; // Putus, reset hitungan
+      consecutiveCount = 1; 
      }
     }
     
@@ -1174,7 +1178,6 @@
       createdAt: new Date().toISOString()
     };
 
-    // Optimistic UI Update: Langsung perbarui data lokal agar antarmuka instan berubah
     if (editingFlightId) {
      const index = allFlightData.findIndex(f => f.id === editingFlightId || f.__backendId === editingFlightId || f[0] === editingFlightId);
      if(index !== -1) {
@@ -1192,7 +1195,6 @@
      allFlightData.push(payload);
     }
 
-    // Reset Form Segera
     document.getElementById('dateMission').value = '';
     document.getElementById('flightTime').value = '';
     document.getElementById('route').value = '';
@@ -1203,7 +1205,6 @@
     refreshAllUI();
     showInlineMessage('Menyimpan ke Cloud...', 'info');
 
-    // Pengiriman ke server berjalan di Background (Tanpa memblokir UI)
     fetch(WEB_APP_URL, {
       method: 'POST',
       body: JSON.stringify(payload)
@@ -1224,7 +1225,6 @@
 
    function formatForDateInput(dateStr) {
     if (!dateStr) return '';
-    // Jika sudah sesuai standar YYYY-MM-DD
     if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
     const d = new Date(dateStr);
     if (!isNaN(d.getTime())) {
@@ -1274,14 +1274,12 @@
     const btn = document.querySelector(`[data-delete-id="${id}"]`);
     if (btn.dataset.confirm === 'true') {
      
-     // Optimistic UI Update
      allFlightData = allFlightData.filter(f => f.id !== id && f.__backendId !== id && f[0] !== id);
      refreshAllUI();
      showInlineMessage('Menghapus log dari server...', 'info');
      
      const payload = { command: 'delete', id: id };
      
-     // Proses hapus di background
      fetch(WEB_APP_URL, { method: 'POST', body: JSON.stringify(payload) })
        .then(() => fetchData())
        .then(() => showInlineMessage('Log sukses dihapus secara permanen!', 'success'))
@@ -1331,19 +1329,19 @@
     container.innerHTML = yearFlights.map(f => {
      const timeDisplay = cleanExcelTime(f.flightTime || f[5]);
      return `
-     <div class="bg-white rounded-xl p-3 flex flex-row items-center justify-between border shadow-sm hover:border-slate-300 transition gap-2">
-      <div class="flex-1 min-w-0 pr-2">
-        <div class="font-bold text-slate-800 text-sm truncate">${formatDate(f.dateMission || f[4])}</div>
-        <div class="text-xs text-slate-600 font-semibold mt-0.5 truncate">${f.route || f[6]} • <span class="text-blue-600">${timeDisplay} hrs</span></div>
+     <div class="bg-white rounded-xl p-3 flex flex-row items-center justify-between border shadow-sm hover:border-slate-300 transition gap-2 w-full">
+      <div class="flex-1 min-w-0 pr-1">
+        <div class="font-bold text-slate-800 text-[11px] sm:text-sm truncate">${formatDate(f.dateMission || f[4])}</div>
+        <div class="text-[10px] sm:text-xs text-slate-600 font-semibold mt-0.5 truncate">${f.route || f[6]} • <span class="text-blue-600">${timeDisplay} hrs</span></div>
       </div>
-      <div class="flex gap-1.5 shrink-0">
+      <div class="flex gap-1 sm:gap-1.5 shrink-0">
         <button onclick="editFlight('${f.id || f.__backendId || f[0]}')" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg" title="Edit">
          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
         </button>
-        <button onclick="copyFlight('${f.id || f.__backendId || f[0]}')" class="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg flex items-center justify-center" title="Copy">
+        <button onclick="copyFlight('${f.id || f.__backendId || f[0]}')" class="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg flex items-center justify-center text-xs" title="Copy">
          📋
         </button>
-        <button data-delete-id="${f.id || f.__backendId || f[0]}" data-confirm="false" onclick="deleteFlight('${f.id || f.__backendId || f[0]}')" class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg text-xs font-semibold" title="Delete">Delete</button>
+        <button data-delete-id="${f.id || f.__backendId || f[0]}" data-confirm="false" onclick="deleteFlight('${f.id || f.__backendId || f[0]}')" class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg text-[10px] sm:text-xs font-semibold" title="Delete">Delete</button>
       </div>
      </div>
     `;
@@ -1810,19 +1808,9 @@
 
    function formatDate(dateStr) {
     if(!dateStr) return '';
-    
-    // Check if the input is a time format (e.g., "00:10" or "01:30")
-    if (/^\d{1,2}:\d{2}$/.test(dateStr)) {
-      return dateStr;
-    }
-
+    if (/^\d{1,2}:\d{2}$/.test(dateStr)) return dateStr;
     const date = new Date(dateStr);
-    
-    // Check if the date is valid
-    if (isNaN(date.getTime())) {
-      return dateStr; // Return original string if invalid date
-    }
-
+    if (isNaN(date.getTime())) return dateStr;
     return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
    }
 
@@ -1839,13 +1827,13 @@
     const formBatch = document.getElementById('batchEntryForm');
 
     if (tabType === 'single') {
-     tabSingle.className = "py-2.5 px-4 border-b-2 border-blue-600 text-blue-600 font-bold text-xs uppercase tracking-wider focus:outline-none transition-all shrink-0";
-     tabBatch.className = "py-2.5 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-bold text-xs uppercase tracking-wider focus:outline-none transition-all flex items-center gap-1.5 shrink-0";
+     tabSingle.className = "py-2.5 px-3 border-b-2 border-blue-600 text-blue-600 font-bold text-[10px] sm:text-xs uppercase tracking-wider focus:outline-none transition-all shrink-0 whitespace-nowrap";
+     tabBatch.className = "py-2.5 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-bold text-[10px] sm:text-xs uppercase tracking-wider focus:outline-none transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap";
      formSingle.classList.remove('hidden');
      formBatch.classList.add('hidden');
     } else {
-     tabSingle.className = "py-2.5 px-4 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-bold text-xs uppercase tracking-wider focus:outline-none transition-all shrink-0";
-     tabBatch.className = "py-2.5 px-4 border-b-2 border-blue-600 text-blue-600 font-bold text-xs uppercase tracking-wider focus:outline-none transition-all flex items-center gap-1.5 shrink-0";
+     tabSingle.className = "py-2.5 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700 font-bold text-[10px] sm:text-xs uppercase tracking-wider focus:outline-none transition-all shrink-0 whitespace-nowrap";
+     tabBatch.className = "py-2.5 px-3 border-b-2 border-blue-600 text-blue-600 font-bold text-[10px] sm:text-xs uppercase tracking-wider focus:outline-none transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap";
      formSingle.classList.add('hidden');
      formBatch.classList.remove('hidden');
     }
@@ -1905,7 +1893,7 @@
     const text = document.getElementById('batchInputText').value;
     const lines = text.split('\n');
     const parsedResults = [];
-    const newValidDates = []; // Melacak tanggal baru yg sudah lolos antrean untuk uji 7 hari
+    const newValidDates = []; 
 
     lines.forEach((line, index) => {
      const trimmed = line.trim();
@@ -1941,14 +1929,13 @@
        errorMessage = errorMessage ? errorMessage + ', Format Jam salah' : 'Format Jam salah';
       }
       
-      // Integrasi: Cek Hari Ke-7 berturut-turut pada Batch Processing
       if (isValid) {
           const datesToCheck = [...newValidDates, dateMission];
           if (check7ConsecutiveDaysViolation(currentPilot, datesToCheck)) {
               isValid = false;
               errorMessage = 'Pelanggaran 7 hari beruntun (Wajib OFF)';
           } else {
-              newValidDates.push(dateMission); // Masukkan ke daftar aman sementara
+              newValidDates.push(dateMission); 
           }
       }
 
@@ -1990,10 +1977,10 @@
      const statusText = r.isValid ? '✓ Valid' : `✗ ${r.errorMessage}`;
      return `
       <tr class="hover:bg-slate-50 border-b border-slate-100 transition">
-       <td class="p-2.5 font-semibold text-slate-800">${r.isValid ? formatDate(r.dateMission) : '<span class="text-slate-400">Error</span>'}</td>
-       <td class="p-2.5 font-medium text-slate-700">${r.isValid ? r.route : '<span class="text-slate-400">-</span>'}</td>
-       <td class="p-2.5 font-bold text-blue-600">${r.isValid ? r.flightTime : '<span class="text-slate-400">-</span>'}</td>
-       <td class="p-2.5 text-right ${statusClass} text-[10px] uppercase tracking-wide truncate max-w-[150px]" title="${r.original}">${statusText}</td>
+       <td class="p-2 font-semibold text-slate-800">${r.isValid ? formatDate(r.dateMission) : '<span class="text-slate-400">Error</span>'}</td>
+       <td class="p-2 font-medium text-slate-700">${r.isValid ? r.route : '<span class="text-slate-400">-</span>'}</td>
+       <td class="p-2 font-bold text-blue-600">${r.isValid ? r.flightTime : '<span class="text-slate-400">-</span>'}</td>
+       <td class="p-2 text-right ${statusClass} text-[9px] sm:text-[10px] uppercase tracking-wide truncate max-w-[120px] sm:max-w-[150px]" title="${r.original}">${statusText}</td>
       </tr>
      `;
     }).join('');
@@ -2027,16 +2014,14 @@
       createdAt: new Date().toISOString()
      };
      payloads.push(payload);
-     allFlightData.push(payload); // Optimistic UI: Tambahkan langsung
+     allFlightData.push(payload); 
     });
 
-    // Perbarui UI secara langsung
     refreshAllUI();
     clearBatchInput();
     switchEntryTab('single');
     showInlineMessage(`Memproses ${validItems.length} data ke Cloud...`, 'info');
 
-    // Proses pengiriman antrean ke background
     for (const payload of payloads) {
      try {
        await fetch(WEB_APP_URL, {
@@ -2056,7 +2041,6 @@
     const btn = document.getElementById('syncBtn');
     const icon = document.getElementById('syncIcon');
     
-    // Cegah double klik
     if(btn.disabled) return;
     
     btn.disabled = true;
@@ -2087,11 +2071,9 @@
    }
 
    // --- STREAMING_CHUNK:Executing app initialization... ---
-   // Setup PWA - Membuat aplikasi dapat diinstal di HP/PC
    function setupPWA() {
     const iconUrl = 'https://lh3.googleusercontent.com/d/1mYhdJNvv6KuIcK_LeUuGlejjRmC1Rgo4';
     
-    // Inject Manifest JSON Dinamis
     const manifest = {
      name: "Transwisata Pilot Consecutive Days",
      short_name: "Consecutive Pilot",
@@ -2108,7 +2090,6 @@
     const manifestUrl = URL.createObjectURL(manifestBlob);
     document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${manifestUrl}">`);
 
-    // Inject Service Worker Dinamis
     const swCode = `
       self.addEventListener('install', (e) => { self.skipWaiting(); });
       self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
